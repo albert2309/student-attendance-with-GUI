@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tugasCok;
+ package tugasCok;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
@@ -188,7 +188,7 @@ public class Menu extends javax.swing.JFrame {
         });
     }
  public int loadFile() throws IOException{
-        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\loginList.txt");
+        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
         Scanner in = new Scanner(inputFile);
         Scanner lineTokenizer;
         String currLine;

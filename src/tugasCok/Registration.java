@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tugasCok;
+ package tugasCok;
 
 import java.text.*;
 import java.util.Arrays;
@@ -11,7 +11,9 @@ import java.util.Scanner;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
-/**
+import java.time.*;
+ import java.time.format.DateTimeFormatter;
+ /**
  *
  * @author Albert
  */
@@ -76,8 +78,6 @@ public class Registration extends javax.swing.JFrame {
         jLabel5.setText("Username");
 
         jLabel6.setText("Password");
-
-        passwordField.setText("jPasswordField1");
 
         registerButton.setText("Register");
 
@@ -222,8 +222,6 @@ public class Registration extends javax.swing.JFrame {
 
         jLabel6.setText("Password");
 
-        passwordField.setText("jPasswordField1");
-
         registerButton.setText("Register");
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,105 +330,156 @@ public class Registration extends javax.swing.JFrame {
     }//GEN-LAST:event_cancel
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-       FileReader inputFile;
-        try{
-           inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\userList.txt"); 
-        Scanner in = new Scanner(inputFile);
-        Scanner lineTokenizer;
-        String currLine;
-        String userName;
-        String password;
-        String userType;
-        //NOTE: FILLED REFERS TO THE DATA THAT WAS FILLED IN THE FORM
-        String filledUser = userField.getText();
-        char[] filledPass = passwordField.getPassword();
-
-        boolean hasExist = false;
-        final JPanel panel = new JPanel();
-         if(Arrays.equals(filledUser.toCharArray(),filledPass)){
-                  JOptionPane.showMessageDialog(panel, "Username must not same as password", "Error", JOptionPane.ERROR_MESSAGE);
-                  hasExist = true;
-         }
-        while(in.hasNext() && hasExist == false){
-            currLine = in.nextLine();
-            lineTokenizer = new Scanner(currLine);
-            lineTokenizer.useDelimiter(";");
-            userName = lineTokenizer.next();
-            password = lineTokenizer.next();
-            userType = lineTokenizer.next();
-            if(userName.equals(filledUser)){
-                  JOptionPane.showMessageDialog(panel, "Username has exist", "Error", JOptionPane.ERROR_MESSAGE);
-                  hasExist = true;
-                }
-         }
-        //Username can be assume as ID (if it does not work)
-          if(!hasExist){
-              
-              try {
-                  if (jLabel1.getText().toString().equals("Please fill in Lecturer's information") == true) {
-                      inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\lecturerInfoList.txt");
-                  } else {
-                      inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\studentInfoList.txt");
-                  }
-              } catch (IOException fileError) {
-            System.out.println("FILE NOT FOUND!!"); 
-            System.exit(0);    
+        /*
+        List of available bugs:
+        OPTIONAL: CHECK IF THE DATE IS VALID OR NOT
+         */
+        FileReader inputFile;
+        try {
+            inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+            Scanner in = new Scanner(inputFile);
+            Scanner lineTokenizer;
+            String currLine;
+            String userName;
+            //NOTE: FILLED REFERS TO THE DATA THAT WAS FILLED IN THE FORM
+            String filledUser = userField.getText();
+            char[] filledPass = passwordField.getPassword();
+            String filledFirst = firstNameField.getText();
+            String filledLastName = lastNameField.getText();
+            String filledGender = "Null";
+            Enumeration<AbstractButton> buttonlist = buttonGroup1.getElements();
+            AbstractButton button = buttonlist.nextElement();
+            if (button.isSelected()) {
+                filledGender = "Male";
             }
-              String idNumber;
-              //The int variable takes the smallest number that is available so any empty number will be filled rather than left it as a gap.
-              //However, the number is taken by through parsing of idNumber in each line.
-             
-              String dateOfBirth;
-              String filledFirst = firstNameField.getText();
-              String filledLastName = lastNameField.getText();
-              String filledGender = "Null";
-              if (male.hasFocus()) {
-                  filledGender = "Male";
-              } else if (female.hasFocus()) {
-                  filledGender = "Female";
-              }
-              String filledDOB = DOBSpinner.getValue().toString();
-              ArrayList<Integer> existingId = new ArrayList();
+            button = buttonlist.nextElement();
+             if (button.isSelected()) {
+                filledGender = "Female";
+            }
+            String filledDOB = DOBSpinner.getValue().toString();
+            String[] splitDOB = filledDOB.split(" ");
+            filledDOB = splitDOB[2] + " " + splitDOB[1] + " " + splitDOB[5];
+            final JPanel panel = new JPanel();
+           LocalDate localDate = LocalDate.now();
+           String currentDate = DateTimeFormatter.ofPattern("dd MMM yyyy").format(localDate).toString();
+           System.out.println(currentDate);
+           System.out.println(filledDOB); 
+            
+        if(userField.getText().isEmpty())
+            JOptionPane.showMessageDialog(panel, "Missing user name!", "Error", JOptionPane.ERROR_MESSAGE);
+         if(String.valueOf(filledPass).isEmpty())
+            JOptionPane.showMessageDialog(panel, "Missing password!", "Error", JOptionPane.ERROR_MESSAGE);
+         if(firstNameField.getText().isEmpty())
+            JOptionPane.showMessageDialog(panel, "Missing first name!", "Error", JOptionPane.ERROR_MESSAGE);
+         if(lastNameField.getText().isEmpty())
+            JOptionPane.showMessageDialog(panel, "Missing last name!", "Error", JOptionPane.ERROR_MESSAGE);
+         if(filledGender == "Null")
+            JOptionPane.showMessageDialog(panel, "Pick gender!", "Error", JOptionPane.ERROR_MESSAGE);
+         
+         if(filledDOB.compareTo(currentDate) == 0)
+            JOptionPane.showMessageDialog(panel, "Date must not be today!", "Error", JOptionPane.ERROR_MESSAGE);
+         else if(filledDOB.compareTo(currentDate) > 0 )
+             JOptionPane.showMessageDialog(panel, "Date must be in past not future!", "Error", JOptionPane.ERROR_MESSAGE);
+         
+            boolean hasExist = false;
+            if (Arrays.equals(filledUser.toCharArray(), filledPass)) {
+                JOptionPane.showMessageDialog(panel, "Username must not same as password", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
+            }
+            while (in.hasNext() && hasExist == false) {
+                currLine = in.nextLine();
+                lineTokenizer = new Scanner(currLine);
+                lineTokenizer.useDelimiter(";");
+                userName = lineTokenizer.next();
+                if (userName.equals(filledUser)) {
+                    JOptionPane.showMessageDialog(panel, "Username has exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    hasExist = true;
+                }
+            }
+            //Username can be assume as ID (if it does not work)
+            if (!hasExist) {
+                try {
+                    if (jLabel1.getText().toString().equals("Please fill in Lecturer's information") == true) {
+                        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\lecturerInfoList.txt");
+                    } else {
+                        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt");
+                    }
+                } catch (IOException fileError) {
+                    System.out.println("FILE NOT FOUND!!");
+                    System.exit(0);
+                }
+                String idNumber;
+                //The int variable takes the smallest number that is available so any empty number will be filled rather than left it as a gap.
+                //However, the number is taken by through parsing of idNumber in each line.
 
-              //format:ID;username;first name;last name;gender;DOB  
-              in = new Scanner(inputFile);
-              while (in.hasNext()) {
-                  currLine = in.nextLine();
-                  lineTokenizer = new Scanner(currLine);
-                  lineTokenizer.useDelimiter(";");
-                  idNumber = lineTokenizer.next();
-                  existingId.add(Integer.parseInt(idNumber));
-              }
-              Collections.sort(existingId);
-              //search a sorted number on which one is missing
-              int smallestAvailableNumber = 0;
-              for (int x = 0; x < existingId.size(); x++) {
-                  if (x != existingId.get(x)) {
-                      smallestAvailableNumber = x;
-                  }
-              }
-              String registeredUser;
-              PrintWriter output;
-              if (jLabel1.getText().toString().equals("Please fill in Lecturer's information") == true) {
-                  output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\lecturerInfoList.txt", true));
-                  registeredUser = "L-" + smallestAvailableNumber + ";" + filledUser + ';' + filledFirst + ';' + filledLastName + ';' + filledGender + ';' + filledDOB;
-                  output.append(registeredUser);
-              } else {
-                  output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\my\\Menu\\studentInfoList.txt", true));
-                  registeredUser = "S-" + smallestAvailableNumber + ";" + filledUser + ';' + filledFirst + ';' + filledLastName + ';' + filledGender + ';' + filledDOB;
-                  output.append(registeredUser);
-              }
-              JOptionPane.showMessageDialog(panel, "Registration success");
-           /*
+ 
+                ArrayList<Integer> existingId = new ArrayList();
+                //format:ID;username;first name;last name;gender;DOB
+              //check take all available number and put the number into arrayList 
+                in = new Scanner(inputFile);
+                String idTag = "";
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+
+                    idTag = lineTokenizer.next();
+                    idNumber = idTag.replaceAll("\\D+", "");
+                    existingId.add(Integer.parseInt(idNumber));
+                }
+                Collections.sort(existingId);
+                //search a sorted number on which one is missing
+                int smallestAvailableNumber = 0;
+                for (int x = 0; x < existingId.size(); x++) {
+                    if (x != existingId.get(x)) {
+                        smallestAvailableNumber = x;
+                        smallestAvailableNumber++;
+                        break;
+                    }
+                }
+                String registeredUser;
+                PrintWriter output;
+                if (jLabel1.getText().equals("Please fill in Lecturer's information") == true) {
+                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\lecturerInfoList.txt", true));
+                    registeredUser = "L-" + smallestAvailableNumber + ";" + filledUser + ";" + filledFirst + ";" + filledLastName + ";" + filledGender + ";" + filledDOB;
+                    if (smallestAvailableNumber > 0) {
+                        output.append('\n');
+                    }
+                    output.append(registeredUser);
+                    output.close();
+                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt", true));
+                    registeredUser = filledUser + ";" + String.valueOf(filledPass) + ";lecturer";
+                    if (smallestAvailableNumber > 0) {
+                        output.append('\n');
+                    }
+                    output.append(registeredUser);
+                } else {
+                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt", true));
+                    registeredUser = "S-" + smallestAvailableNumber + ";" + filledUser + ";" + filledFirst + ";" + filledLastName + ";" + filledGender + ";" + filledDOB;
+                    if (smallestAvailableNumber > 0) {
+                        output.append('\n');
+                    }
+                    output.append(registeredUser);
+                    output.close();
+                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt", true));
+                    registeredUser = filledUser + ";" + String.valueOf(filledPass) + ";student";
+                    if (smallestAvailableNumber > 0) {
+                        output.append('\n');
+                    }
+                    output.append(registeredUser);
+                }
+                output.close();
+                JOptionPane.showMessageDialog(panel, "Registration success");
+                /*
             firstName = lineTokenizer.next();
             lastName = lineTokenizer.next();
             gender = lineTokenizer.next();
             dateOfBirth = lineTokenizer.next();
-           */ 
-          }
-           }catch(IOException fileError){
-        System.out.println("FILE NOT FOUND!!"); 
-        System.exit(0);    
+                 */
+            }
+        } catch (IOException fileError) {
+            System.out.println("FILE NOT FOUND!!");
+            System.exit(0);
         }
     }//GEN-LAST:event_registerButtonActionPerformed
 
