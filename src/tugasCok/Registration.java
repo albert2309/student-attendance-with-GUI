@@ -362,8 +362,6 @@ public class Registration extends javax.swing.JFrame {
             final JPanel panel = new JPanel();
            LocalDate localDate = LocalDate.now();
            String currentDate = DateTimeFormatter.ofPattern("dd MMM yyyy").format(localDate).toString();
-           System.out.println(currentDate);
-           System.out.println(filledDOB); 
             
         if(userField.getText().isEmpty())
             JOptionPane.showMessageDialog(panel, "Missing user name!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -373,7 +371,7 @@ public class Registration extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(panel, "Missing first name!", "Error", JOptionPane.ERROR_MESSAGE);
          if(lastNameField.getText().isEmpty())
             JOptionPane.showMessageDialog(panel, "Missing last name!", "Error", JOptionPane.ERROR_MESSAGE);
-         if(filledGender == "Null")
+         if(filledGender.equals("Null"))
             JOptionPane.showMessageDialog(panel, "Pick gender!", "Error", JOptionPane.ERROR_MESSAGE);
          
          if(filledDOB.compareTo(currentDate) == 0)
@@ -414,8 +412,8 @@ public class Registration extends javax.swing.JFrame {
 
  
                 ArrayList<Integer> existingId = new ArrayList();
-                //format:ID;username;first name;last name;gender;DOB
-              //check take all available number and put the number into arrayList 
+               //format:ID;username;first name;last name;gender;DOB
+               //check take all available number and put the number into arrayList 
                 in = new Scanner(inputFile);
                 String idTag = "";
                 while (in.hasNext()) {
