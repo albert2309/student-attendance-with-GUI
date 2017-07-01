@@ -166,22 +166,22 @@ public class Admin extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void registerStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStudentActionPerformed
-        Registration studentFrame = new Registration(1);
+        Registration studentFrame = new Registration(true);
         studentFrame.setVisible(true);
     }//GEN-LAST:event_registerStudentActionPerformed
 
     private void registerLecturerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerLecturerActionPerformed
-        Registration lecturerFrame = new Registration(2);
+        Registration lecturerFrame = new Registration(false);
         lecturerFrame.setVisible(true);
     }//GEN-LAST:event_registerLecturerActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        viewAll studentFrameList = new viewAll(false);
+        ViewAll studentFrameList = new ViewAll(false);
         studentFrameList.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        viewAll lecturerFrameList = new viewAll(true);
+        ViewAll lecturerFrameList = new ViewAll(true);
         lecturerFrameList.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 

@@ -1,3 +1,7 @@
-Albert;Jonathan;admin
-xxx;xxxx;student
-www;xxxx;student
+devira;putri;student
+devira22;putri;student
+yuna;xx;student
+kiev;del;student
+tanveer;sikh;lecturer
+tanveer2;sikh;lecturer
+third;echelon;lecturer
