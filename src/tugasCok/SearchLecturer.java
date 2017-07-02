@@ -104,11 +104,7 @@ public class SearchLecturer extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Id", "Username", "First name", "Last name", "Gender", "Date of Birth", "Intake"
@@ -227,63 +223,75 @@ public class SearchLecturer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        boolean error = false;
         final JPanel panel = new JPanel();
         if (buttonGroup1.getSelection() == null) {
-            JOptionPane.showMessageDialog(panel, "Please select one", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(panel, "Please select a button on 'Based On' section", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
         }
         if (jTextField1.getText().isEmpty() == true) {
             JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
         }
+        if (jTable1.getSelectionModel().isSelectionEmpty() == true) {
+            JOptionPane.showMessageDialog(panel, "Please select a row on result", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        int[] listSelected = jTable1.getSelectedRows();
+        if (listSelected.length > 1){
+            JOptionPane.showMessageDialog(panel, "Please select only one row!", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        if (!error){
+            try {
+                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+                Scanner in = new Scanner(inputFile);
+                Scanner lineTokenizer;
+                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                    model.removeRow(rowCount - 1);
+                }
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    id = lineTokenizer.next();
+                    username = lineTokenizer.next();
+                    firstName = lineTokenizer.next();
+                    lastName = lineTokenizer.next();
+                    gender = lineTokenizer.next();
+                    dateOfBirth = lineTokenizer.next();
+                    intake = lineTokenizer.next();
 
-        try {
-            FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
-            Scanner in = new Scanner(inputFile);
-            Scanner lineTokenizer;
-            String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
-                model.removeRow(rowCount - 1);
-            }
-            while (in.hasNext()) {
-                currLine = in.nextLine();
-                lineTokenizer = new Scanner(currLine);
-                lineTokenizer.useDelimiter(";");
-                id = lineTokenizer.next();
-                username = lineTokenizer.next();
-                firstName = lineTokenizer.next();
-                lastName = lineTokenizer.next();
-                gender = lineTokenizer.next();
-                dateOfBirth = lineTokenizer.next();
-                intake = lineTokenizer.next();
-
-                for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
-                    AbstractButton checkButton = buttonList.nextElement();
-                    if (checkButton.isSelected()) {
-                        String searchQuery = jTextField1.getText();
-                        if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareToIgnoreCase(firstName) == 0 && checkButton.getText().compareTo("First Name") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareToIgnoreCase(lastName) == 0 && checkButton.getText().compareTo("Last Name") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareToIgnoreCase(gender) == 0 && checkButton.getText().compareTo("Gender") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                        } else if (searchQuery.compareToIgnoreCase(intake) == 0 && checkButton.getText().compareTo("Intake") == 0) {
-                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
+                        AbstractButton checkButton = buttonList.nextElement();
+                        if (checkButton.isSelected()) {
+                            String searchQuery = jTextField1.getText();
+                            if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareToIgnoreCase(firstName) == 0 && checkButton.getText().compareTo("First Name") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareToIgnoreCase(lastName) == 0 && checkButton.getText().compareTo("Last Name") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareToIgnoreCase(gender) == 0 && checkButton.getText().compareTo("Gender") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (searchQuery.compareToIgnoreCase(intake) == 0 && checkButton.getText().compareTo("Intake") == 0) {
+                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            }
                         }
                     }
                 }
+                in.close();
+            } catch (IOException fileError) {
+                System.out.println("FILE NOT FOUND!!");
+                System.exit(0);
             }
-        in.close();    
-        } catch (IOException fileError) {
-            System.out.println("FILE NOT FOUND!!");
-            System.exit(0);
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void firstButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstButtonActionPerformed
@@ -357,6 +365,7 @@ public class SearchLecturer extends javax.swing.JFrame {
 //        model.removeRow(selectedRow - 1);
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
+    @SuppressWarnings("empty-statement")
     public void saveFile(String selecetedUser) throws IOException {
         //Write all the remaining lecturers into texfile
         FileWriter outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
@@ -373,9 +382,9 @@ public class SearchLecturer extends javax.swing.JFrame {
         Scanner lineTokenizer;
         
         currLine = "";
-        ArrayList<String> userList = new ArrayList<String>();
-        ArrayList<String> passwordList = new ArrayList<String>();
-        ArrayList<String> userType = new ArrayList<String>();
+        ArrayList<String> userList = new ArrayList<>();
+        ArrayList<String> passwordList = new ArrayList<>();
+        ArrayList<String> userType = new ArrayList<>();
         
         int countUser = 0;
         String candidateString, pass,user = "";
