@@ -1,9 +1,11 @@
 package tugasCok;
 
-
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,9 +15,8 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
- *
+ * OPTIONAL ERROR CHECK: MAKE SURE THE USER PICK ONE ROW AND MUST NOT ME MORE THAN ONE
  * @author Albert
  */
 public class SearchLecturer extends javax.swing.JFrame {
@@ -24,6 +25,7 @@ public class SearchLecturer extends javax.swing.JFrame {
      * Creates new form Search
      */
     public SearchLecturer() {
+        lecturerList = new ArrayList<Lecturer>();
         initComponents();
     }
 
@@ -51,6 +53,7 @@ public class SearchLecturer extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         userButton = new javax.swing.JRadioButton();
+        DeleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -64,11 +67,16 @@ public class SearchLecturer extends javax.swing.JFrame {
         idButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         buttonGroup1.add(firstButton);
-        firstButton.setText("First name");
+        firstButton.setText("First Name");
         firstButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        firstButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstButtonActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(lastButton);
-        lastButton.setText("Last name");
+        lastButton.setText("Last Name");
 
         buttonGroup1.add(genderButton);
         genderButton.setText("Gender");
@@ -96,19 +104,35 @@ public class SearchLecturer extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Username", "First name", "Last name", "Gender", "Date of Birth", "Intake"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         buttonGroup1.add(userButton);
-        userButton.setText("username");
+        userButton.setText("Username");
+
+        DeleteButton.setText("Delete");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,26 +151,37 @@ public class SearchLecturer extends javax.swing.JFrame {
                                 .addComponent(jLabel2))
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(idButton)
                                         .addGap(55, 55, 55)
                                         .addComponent(lastButton))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jButton2)
-                                            .addComponent(firstButton))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(genderButton))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(firstButton)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(jButton2)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(genderButton))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButton1))))
                                     .addComponent(userButton))
-                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(intakeButton)
-                                    .addComponent(jButton1)
-                                    .addComponent(dobButton))))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(intakeButton)
+                                            .addComponent(dobButton)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addComponent(DeleteButton)))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +190,7 @@ public class SearchLecturer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(19, Short.MAX_VALUE))
+                        .addContainerGap(21, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
@@ -177,7 +212,8 @@ public class SearchLecturer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
-                            .addComponent(jButton2))
+                            .addComponent(jButton2)
+                            .addComponent(DeleteButton))
                         .addGap(26, 26, 26))))
         );
 
@@ -186,23 +222,28 @@ public class SearchLecturer extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
-        removeAll();   
-        this.dispose();       
+        removeAll();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         final JPanel panel = new JPanel();
-        if(buttonGroup1.getSelection() == null)
-           JOptionPane.showMessageDialog(panel, "Please select one", "Error", JOptionPane.ERROR_MESSAGE);
-        if(jTextField1.getText().isEmpty() == true)  
-           JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
-        
-         try {
+        if (buttonGroup1.getSelection() == null) {
+            JOptionPane.showMessageDialog(panel, "Please select one", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (jTextField1.getText().isEmpty() == true) {
+            JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
             FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
-            String currLine, id, username, firstName, lastName, gender, dateOfBirth,intake;
+            String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                model.removeRow(rowCount - 1);
+            }
             while (in.hasNext()) {
                 currLine = in.nextLine();
                 lineTokenizer = new Scanner(currLine);
@@ -214,25 +255,155 @@ public class SearchLecturer extends javax.swing.JFrame {
                 gender = lineTokenizer.next();
                 dateOfBirth = lineTokenizer.next();
                 intake = lineTokenizer.next();
-                
-                Enumeration<AbstractButton> buttonList = buttonGroup1.getElements();
-                for(AbstractButton checkButton = buttonList.nextElement();buttonList.hasMoreElements();)   
-                {
-                    if(checkButton.isSelected()){
+
+                for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
+                    AbstractButton checkButton = buttonList.nextElement();
+                    if (checkButton.isSelected()) {
                         String searchQuery = jTextField1.getText();
-                        if(searchQuery.compareToIgnoreCase(checkButton.getText()) == 0){
-                        model.addRow(new Object[]{id, firstName, lastName, gender, dateOfBirth,intake});                            
+                        if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(firstName) == 0 && checkButton.getText().compareTo("First Name") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(lastName) == 0 && checkButton.getText().compareTo("Last Name") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(gender) == 0 && checkButton.getText().compareTo("Gender") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(intake) == 0 && checkButton.getText().compareTo("Intake") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
                         }
                     }
                 }
             }
-
+        in.close();    
         } catch (IOException fileError) {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void firstButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_firstButtonActionPerformed
+
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedRow = jTable1.getSelectedRow();
+        String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
+        String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
+        String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
+        String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
+        String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
+        String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
+        String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
+        //  System.out.println(selectedID);
+        final JPanel panel = new JPanel();
+        final JOptionPane optionPane = new JOptionPane(
+                JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.YES_NO_OPTION);
+        optionPane.setWantsInput(true);
+        optionPane.setVisible(true);
+        Object[] options = {"NO", "DELETE"};
+        int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to remove this?"
+                + "\nID:" + selectedID
+                + "\nUsername:" + selectedUser
+                + "\nFirst Name:" + selectedFirst
+                + "\nLast Name:" + selectedLast
+                + "\nGender:" + selectedGender
+                + "\nDate of Birth:" + selectedDate
+                + "\nIntake:" + selectedIntake, "Confirmation",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+        if (selectedValue == 1) {
+            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                model.removeRow(rowCount - 1);
+            }
+            try {
+                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+                Scanner in = new Scanner(inputFile);
+                Scanner lineTokenizer;
+                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    id = lineTokenizer.next();
+                    username = lineTokenizer.next();
+                    firstName = lineTokenizer.next();
+                    lastName = lineTokenizer.next();
+                    gender = lineTokenizer.next();
+                    dateOfBirth = lineTokenizer.next();
+                    intake = lineTokenizer.next();
+                    //masukin ke dalam list atau array.
+                    if(selectedID.compareTo(id) != 0) {
+                        Lecturer curr;
+                        curr = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                        lecturerList.add(curr);
+                    }
+                }
+                    in.close();
+                    saveFile(selectedUser);
+            } catch (IOException fileError) {
+                System.out.println("FILE NOT FOUND!!");
+                System.exit(0);
+            }
+            //setelah masukin. Write ke dalam
+        }
+
+//        model.removeRow(selectedRow - 1);
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
+    public void saveFile(String selecetedUser) throws IOException {
+        //Write all the remaining lecturers into texfile
+        FileWriter outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+        String currLine = "";
+        for (int index = 0; index < lecturerList.size(); index++) {
+            currLine = lecturerList.get(index).getIdNumber() + ";" + lecturerList.get(index).getUsername() + ";" + lecturerList.get(index).getFirstName() + ";" + lecturerList.get(index).getLastName() + ";" + lecturerList.get(index).getGender() + ";" + lecturerList.get(index).getDateOfBirth() + ";" + lecturerList.get(index).getIntake();
+            outputFile.write(currLine +'\n');
+        }
+        outputFile.close();
+       //Take a list of users
+//        String loginFile = "D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt";
+        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+        Scanner in = new Scanner(inputFile);
+        Scanner lineTokenizer;
+        
+        currLine = "";
+        ArrayList<String> userList = new ArrayList<String>();
+        ArrayList<String> passwordList = new ArrayList<String>();
+        ArrayList<String> userType = new ArrayList<String>();
+        
+        int countUser = 0;
+        String candidateString, pass,user = "";
+        while(in.hasNext()){
+            currLine = in.nextLine();
+            lineTokenizer = new Scanner(currLine);
+            lineTokenizer.useDelimiter(";");
+            candidateString = lineTokenizer.next();
+            if(selecetedUser.compareTo(candidateString) != 0){  
+            userList.add(candidateString);
+             pass = lineTokenizer.next();
+            passwordList.add(pass);
+            user = lineTokenizer.next();
+            userType.add(user);
+            countUser++;
+            } 
+        }
+        
+        outputFile = new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");;
+        currLine = "";
+        for (int index = 0; index < countUser; index++) {
+            currLine = userList.get(index) + ";" + passwordList.get(index) + ";" + userType.get(index);
+            outputFile.write(currLine + '\n');
+        }
+        outputFile.close();
+        in.close();
+     
+        }
 
     /**
      * @param args the command line arguments
@@ -269,8 +440,9 @@ public class SearchLecturer extends javax.swing.JFrame {
             }
         });
     }
-
+    private List<Lecturer> lecturerList;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton DeleteButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton dobButton;
     private javax.swing.JRadioButton firstButton;
