@@ -1,5 +1,6 @@
-package tugasCok;
+package tugasCok; 
 
+import tugasCok.ModifyLecturer;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,8 +16,7 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- * OPTIONAL ERROR CHECK: MAKE SURE THE USER PICK ONE ROW AND MUST NOT ME MORE THAN ONE
+/*
  * @author Albert
  */
 public class SearchLecturer extends javax.swing.JFrame {
@@ -47,13 +47,14 @@ public class SearchLecturer extends javax.swing.JFrame {
         lastButton = new javax.swing.JRadioButton();
         genderButton = new javax.swing.JRadioButton();
         dobButton = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         intakeButton = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         userButton = new javax.swing.JRadioButton();
         DeleteButton = new javax.swing.JButton();
+        modifyLecturer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -69,11 +70,6 @@ public class SearchLecturer extends javax.swing.JFrame {
         buttonGroup1.add(firstButton);
         firstButton.setText("First Name");
         firstButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        firstButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                firstButtonActionPerformed(evt);
-            }
-        });
 
         buttonGroup1.add(lastButton);
         lastButton.setText("Last Name");
@@ -85,10 +81,10 @@ public class SearchLecturer extends javax.swing.JFrame {
         buttonGroup1.add(dobButton);
         dobButton.setText("Date of Birth");
 
-        jButton1.setText("Search");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                searchButtonActionPerformed(evt);
             }
         });
 
@@ -130,6 +126,13 @@ public class SearchLecturer extends javax.swing.JFrame {
             }
         });
 
+        modifyLecturer.setText("Modify");
+        modifyLecturer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyLecturerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,46 +140,40 @@ public class SearchLecturer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel2))
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(idButton)
-                                        .addGap(55, 55, 55)
-                                        .addComponent(lastButton))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(DeleteButton)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(idButton)
+                                            .addGap(55, 55, 55)
+                                            .addComponent(lastButton))
+                                        .addComponent(userButton)
+                                        .addGroup(layout.createSequentialGroup()
                                             .addComponent(firstButton)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addComponent(jButton2)))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(genderButton))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton1))))
-                                    .addComponent(userButton))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(intakeButton)
-                                            .addComponent(dobButton)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(44, 44, 44)
-                                        .addComponent(DeleteButton)))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+                                            .addGap(22, 22, 22)
+                                            .addComponent(genderButton))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jButton2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(searchButton)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(modifyLecturer)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(intakeButton)
+                                        .addComponent(dobButton))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(154, 154, 154)
+                        .addComponent(jLabel1)))
+                .addGap(59, 59, 59)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -207,9 +204,10 @@ public class SearchLecturer extends javax.swing.JFrame {
                         .addComponent(userButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(searchButton)
                             .addComponent(jButton2)
-                            .addComponent(DeleteButton))
+                            .addComponent(DeleteButton)
+                            .addComponent(modifyLecturer))
                         .addGap(26, 26, 26))))
         );
 
@@ -222,27 +220,7 @@ public class SearchLecturer extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        boolean error = false;
-        final JPanel panel = new JPanel();
-        if (buttonGroup1.getSelection() == null) {
-            JOptionPane.showMessageDialog(panel, "Please select a button on 'Based On' section", "Error", JOptionPane.ERROR_MESSAGE);
-            error = true;
-        }
-        if (jTextField1.getText().isEmpty() == true) {
-            JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
-            error = true;
-        }
-        if (jTable1.getSelectionModel().isSelectionEmpty() == true) {
-            JOptionPane.showMessageDialog(panel, "Please select a row on result", "Error", JOptionPane.ERROR_MESSAGE);
-            error = true;
-        }
-        int[] listSelected = jTable1.getSelectedRows();
-        if (listSelected.length > 1){
-            JOptionPane.showMessageDialog(panel, "Please select only one row!", "Error", JOptionPane.ERROR_MESSAGE);
-            error = true;
-        }
-        if (!error){
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
             try {
                 FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
                 Scanner in = new Scanner(inputFile);
@@ -291,14 +269,30 @@ public class SearchLecturer extends javax.swing.JFrame {
                 System.out.println("FILE NOT FOUND!!");
                 System.exit(0);
             }
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void firstButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_firstButtonActionPerformed
+        
+    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+          boolean error = false;
+       
+        if (buttonGroup1.getSelection() == null) {
+            JOptionPane.showMessageDialog(panel, "Please select a button on 'Based On' section", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        if (jTextField1.getText().isEmpty() == true) {
+            JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        if (jTable1.getSelectionModel().isSelectionEmpty() == true) {
+            JOptionPane.showMessageDialog(panel, "Please select a row on result", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        int[] listSelected = jTable1.getSelectedRows();
+        if (listSelected.length > 1){
+            JOptionPane.showMessageDialog(panel, "Please select only one row!", "Error", JOptionPane.ERROR_MESSAGE);
+            error = true;
+        }
+        if (!error){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int selectedRow = jTable1.getSelectedRow();
         String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
@@ -316,7 +310,7 @@ public class SearchLecturer extends javax.swing.JFrame {
         optionPane.setWantsInput(true);
         optionPane.setVisible(true);
         Object[] options = {"NO", "DELETE"};
-        int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to remove this?"
+        int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to modify this?"
                 + "\nID:" + selectedID
                 + "\nUsername:" + selectedUser
                 + "\nFirst Name:" + selectedFirst
@@ -327,7 +321,7 @@ public class SearchLecturer extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
         if (selectedValue == 1) {
-            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                     for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
                 model.removeRow(rowCount - 1);
             }
             try {
@@ -361,12 +355,25 @@ public class SearchLecturer extends javax.swing.JFrame {
             }
             //setelah masukin. Write ke dalam
         }
-
-//        model.removeRow(selectedRow - 1);
+        }
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
+    private void modifyLecturerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyLecturerActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedRow = jTable1.getSelectedRow();
+        String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
+        String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
+        String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
+        String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
+        String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
+        String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
+        String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
+    ModifyLecturer modify = new ModifyLecturer(selectedID,selectedUser,selectedFirst,selectedLast,selectedGender,selectedDate,selectedIntake);
+    modify.setVisible(true);
+    }//GEN-LAST:event_modifyLecturerActionPerformed
+
     @SuppressWarnings("empty-statement")
-    public void saveFile(String selecetedUser) throws IOException {
+    public void saveFile(String selectedUser) throws IOException {
         //Write all the remaining lecturers into texfile
         FileWriter outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
         String currLine = "";
@@ -393,7 +400,7 @@ public class SearchLecturer extends javax.swing.JFrame {
             lineTokenizer = new Scanner(currLine);
             lineTokenizer.useDelimiter(";");
             candidateString = lineTokenizer.next();
-            if(selecetedUser.compareTo(candidateString) != 0){  
+            if(selectedUser.compareTo(candidateString) != 0){  
             userList.add(candidateString);
              pass = lineTokenizer.next();
             passwordList.add(pass);
@@ -450,6 +457,7 @@ public class SearchLecturer extends javax.swing.JFrame {
         });
     }
     private List<Lecturer> lecturerList;
+    final JPanel panel = new JPanel();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DeleteButton;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -458,7 +466,6 @@ public class SearchLecturer extends javax.swing.JFrame {
     private javax.swing.JRadioButton genderButton;
     private javax.swing.JRadioButton idButton;
     private javax.swing.JRadioButton intakeButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -466,6 +473,8 @@ public class SearchLecturer extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JRadioButton lastButton;
+    private javax.swing.JButton modifyLecturer;
+    private javax.swing.JButton searchButton;
     private javax.swing.JRadioButton userButton;
     // End of variables declaration//GEN-END:variables
 }

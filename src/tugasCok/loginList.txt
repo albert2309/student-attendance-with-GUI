@@ -5,3 +5,4 @@ kiev;del;student
 tanveer;sikh;lecturer
 tanveer2;sikh;lecturer
 third;echelon;lecturer
+tanveer3;sikh;student
