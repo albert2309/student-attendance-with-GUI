@@ -114,7 +114,10 @@ public class SearchLecturer extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         buttonGroup1.add(userButton);
         userButton.setText("Username");
@@ -226,6 +229,7 @@ public class SearchLecturer extends javax.swing.JFrame {
                 Scanner in = new Scanner(inputFile);
                 Scanner lineTokenizer;
                 String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+                String[] splittedIntake;
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
                     model.removeRow(rowCount - 1);
@@ -241,9 +245,9 @@ public class SearchLecturer extends javax.swing.JFrame {
                     gender = lineTokenizer.next();
                     dateOfBirth = lineTokenizer.next();
                     intake = lineTokenizer.next();
+                    splittedIntake = intake.split("/");
 
-                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
-                        AbstractButton checkButton = buttonList.nextElement();
+                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {                        AbstractButton checkButton = buttonList.nextElement();
                         if (checkButton.isSelected()) {
                             String searchQuery = jTextField1.getText();
                             if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
@@ -258,8 +262,12 @@ public class SearchLecturer extends javax.swing.JFrame {
                                 model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
                             } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
                                 model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareToIgnoreCase(intake) == 0 && checkButton.getText().compareTo("Intake") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                            } else if (checkButton.getText().compareTo("Intake") == 0) {
+                                for(int count = 0; count < splittedIntake.length;count++){
+                                    if (splittedIntake[count].compareToIgnoreCase(searchQuery) == 0) {
+                                        model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                                    }
+                                }
                             }
                         }
                     }
