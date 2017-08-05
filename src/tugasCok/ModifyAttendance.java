@@ -18,28 +18,62 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JComboBox;
 //Another way is just to get the data through getter.
 
 /**
  *
  * @author Albert
  */
-public class Session extends javax.swing.JFrame {
+public class ModifyAttendance extends javax.swing.JFrame {
      enum Attendance{NOT_INPUT,PRESENT, ABSENT, LATE};
+   
     /**
      * Creates new form Session
      */
-    public Session(String intakeLecturer, String lecturerID) {
+    public ModifyAttendance(String session, String lecturerID, String moduleCode, String moduleName, String intakeCode, String startTime, String endTime, String lectureDate, String studentList) {
+        this.setVisible(true);
         initComponents();
         this.lecturerID = lecturerID;
-        String[] splittedIntake = intakeLecturer.split("/");
-        for (int count = 0; count < splittedIntake.length; count++) {
-            IntakeList.addItem(splittedIntake[count]);
+        this.sessionID = session;
+        this.moduleCode = moduleCode;
+        this.moduleName = moduleName;
+        this.intakeCode = intakeCode;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.lectureDate = lectureDate;
+        this.studentList = studentList;
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        ModuleText.setText(moduleCode);
+        ModuleNameText.setText(moduleName);
+        IntakeText.setText(intakeCode);
+        EndText.setText(endTime);
+        StartText.setText(startTime);
+        DateText.setText(lectureDate);
+        //tinggal masukin row ke dalam table
+        
+        String[] splitted = studentList.split(",");
+        String tempId  = " ", tempFirst  = " ", tempLast  = " ", tempResult = " ";
+        for (int x = 0; x < splitted.length; x++) {
+            if (x % 4 == 0) {
+                tempId = splitted[x];
+            } else if (x % 4 == 1) {
+                tempFirst = splitted[x];
+            } else if (x % 4 == 2) {
+                tempLast = splitted[x];
+            } else if (x % 4 == 3) {
+                tempResult = splitted[x];
+                if(tempResult.compareTo("PRESENT") == 0)
+                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.PRESENT});
+                else if(tempResult.compareTo("ABSENT") == 0)
+                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.ABSENT});
+                else if(tempResult.compareTo("LATE") == 0)
+                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.LATE});
+            }
         }
-
+        
     }
 
     /**
@@ -51,31 +85,27 @@ public class Session extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        SimpleDateFormat model = new SimpleDateFormat("dd.MMM.yy");
-        DOBSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        IntakeList = new javax.swing.JComboBox<>();
-        StartSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
-        EndSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ModuleText = new javax.swing.JLabel();
+        ModuleNameText = new javax.swing.JLabel();
+        IntakeText = new javax.swing.JLabel();
+        EndText = new javax.swing.JLabel();
+        StartText = new javax.swing.JLabel();
+        DateText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Sessions");
+        jLabel1.setText("Modify Attendance");
 
         jLabel2.setText("Module Code");
 
@@ -87,9 +117,6 @@ public class Session extends javax.swing.JFrame {
 
         jLabel6.setText("End Time");
 
-        DOBSpinner.setModel(new javax.swing.SpinnerDateModel());
-        DOBSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Lecture Date");
 
@@ -98,14 +125,14 @@ public class Session extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student ID", "First name", "Last name", "Status", "null"
+                "Student ID", "First Name", "Last Name", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,10 +147,7 @@ public class Session extends javax.swing.JFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(jComboBox1));
-        }
-        JComboBox<Attendance> comboBox = new JComboBox<Session.Attendance>(Attendance.values());
+        JComboBox<Attendance> comboBox = new JComboBox<ModifyAttendance.Attendance>(Attendance.values());
         jTable1.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(comboBox));
 
         jButton1.setText("Record Attendance");
@@ -140,17 +164,17 @@ public class Session extends javax.swing.JFrame {
             }
         });
 
-        IntakeList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IntakeListActionPerformed(evt);
-            }
-        });
+        ModuleText.setText("InsertHere");
 
-        StartSpinner.setModel(new javax.swing.SpinnerDateModel());
-        StartSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ModuleNameText.setText("InputName");
 
-        EndSpinner.setModel(new javax.swing.SpinnerDateModel());
-        EndSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        IntakeText.setText("InputCode");
+
+        EndText.setText("EndCode");
+
+        StartText.setText("StartCode");
+
+        DateText.setText("DateCode");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,32 +193,25 @@ public class Session extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(DOBSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(IntakeList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(StartSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(EndSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(53, 53, 53))
+                            .addComponent(ModuleText)
+                            .addComponent(ModuleNameText)
+                            .addComponent(IntakeText)
+                            .addComponent(StartText)
+                            .addComponent(EndText)
+                            .addComponent(DateText)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)))
+                        .addComponent(jButton1)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {DOBSpinner, jTextField1, jTextField2});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -204,28 +221,28 @@ public class Session extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(ModuleText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(ModuleNameText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(IntakeList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(IntakeText))
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(StartSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(StartText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(EndSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(EndText))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(DOBSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(DateText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
@@ -234,49 +251,8 @@ public class Session extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {DOBSpinner, jTextField1, jTextField2});
-
-        DOBSpinner.setEditor(new JSpinner.DateEditor(DOBSpinner, model.toPattern()));
-        //DOBSpinner.setEditor(new JSpinner.DateEditor(DOBSpinner, "MM/yyyy"));
-        StartSpinner.setEditor(new JSpinner.DateEditor(StartSpinner, "h:mm a"));
-        EndSpinner.setEditor(new JSpinner.DateEditor(EndSpinner, "h:mm a"));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void IntakeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IntakeListActionPerformed
-        try {
-            FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
-            Scanner in = new Scanner(inputFile);
-            Scanner lineTokenizer;
-            String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
-                model.removeRow(rowCount - 1);
-            }
-            while (in.hasNext()) {
-                currLine = in.nextLine();
-                lineTokenizer = new Scanner(currLine);
-                lineTokenizer.useDelimiter(";");
-                id = lineTokenizer.next();
-                username = lineTokenizer.next();
-                firstName = lineTokenizer.next();
-                lastName = lineTokenizer.next();
-                gender = lineTokenizer.next();
-                dateOfBirth = lineTokenizer.next();
-                intake = lineTokenizer.next();
-
-                if (IntakeList.getSelectedItem().toString().compareTo(intake) == 0) {
-                    model.addRow(new Object[]{id, firstName, lastName, Attendance.NOT_INPUT});
-                }
-            }
-            in.close();
-
-        } catch (IOException fileError) {
-            System.out.println("FILE NOT FOUND!!");
-            System.exit(0);
-        }
-    }//GEN-LAST:event_IntakeListActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
@@ -291,7 +267,7 @@ public class Session extends javax.swing.JFrame {
                 currLine = in.nextLine();
                 lineTokenizer = new Scanner(currLine);
                 lineTokenizer.useDelimiter(";");
-                numberOfLine++;
+
             }
             String studentList = "";
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -318,24 +294,25 @@ public class Session extends javax.swing.JFrame {
             }
             in.close();
             if (isMIssing == false) {
-                String filledDate = DOBSpinner.getValue().toString();
+                String filledDate = lectureDate;
                 String[] tempSplit = filledDate.split(" ");
                 filledDate = tempSplit[2] + " " + tempSplit[1] + " " + tempSplit[5];
-                String filledStart = StartSpinner.getValue().toString();
+                String filledStart = startTime;
                 tempSplit = filledStart.split(" ");
                 filledStart = tempSplit[3];
                 tempSplit = filledStart.split(":");
                 filledStart = tempSplit[0] + ":" + tempSplit[1];
 
-                String filledEnd = EndSpinner.getValue().toString();
+                String filledEnd = endTime;
                 tempSplit = filledEnd.split(" ");
                 filledEnd = tempSplit[3];
                 tempSplit = filledEnd.split(":");
                 filledEnd = tempSplit[0] + ":" + tempSplit[1];
                 System.out.println(filledStart);
                 //Format of save:Session #;lecturer ID;module code; module name;intake code;start time;end time;lecture date; Sessions
-                String savedSession = "SES-" + numberOfLine + ";" + lecturerID + ";" + jTextField1.getText() + ";" + jTextField2.getText() + ";" + IntakeList.getSelectedItem().toString() + ";";
+                String savedSession = "SES-" + numberOfLine + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
                 savedSession += filledStart + ";" + filledEnd + ";" + filledDate + ";" + studentList;
+                System.out.println(savedSession);
                 PrintWriter output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\sessionList.txt", true));
                 if (numberOfLine > 0) {
                     output.append('\n');
@@ -355,7 +332,7 @@ public class Session extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
         removeAll();
-        this.dispose();       // TODO add your handling code here:
+        this.dispose();      
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -375,39 +352,43 @@ public class Session extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Session.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Session.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Session.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Session.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Session("UC2F/UC1F", "L-0").setVisible(true);
+//                new ModifyAttendance().setVisible(true);
             }
         });
     }
     private String moduleCode;
     private String moduleName;
     private String lecturerID;
-    private String date;
+    private String sessionID;
     private String startTime;
     private String endTime;
     private String intakeCode;
+    private String lectureDate;
+    private String studentList;
     private String[] studentIdNumber; //maybe we can use List<Students> instead for easy retrieval by reusing code from the searchStudent. 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner DOBSpinner;
-    private javax.swing.JSpinner EndSpinner;
-    private javax.swing.JComboBox<String> IntakeList;
-    private javax.swing.JSpinner StartSpinner;
+    private javax.swing.JLabel DateText;
+    private javax.swing.JLabel EndText;
+    private javax.swing.JLabel IntakeText;
+    private javax.swing.JLabel ModuleNameText;
+    private javax.swing.JLabel ModuleText;
+    private javax.swing.JLabel StartText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -417,7 +398,5 @@ public class Session extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

@@ -46,8 +46,18 @@ public class Lecturer extends PersonInfo {
         jToggleButton1.setText("View intakewise list of students");
 
         jButton1.setText("Mark the attendance of students");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Modify the attendance of student");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         CancelButton.setText("Exit");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,6 +114,16 @@ public class Lecturer extends PersonInfo {
         removeAll();
         this.dispose();
     }//GEN-LAST:event_CancelButtoncancel
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     Session x = new Session(this.getIntake(),this.getIdNumber());
+     x.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    PickSession x = new PickSession(this.getIdNumber()); 
+    x.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

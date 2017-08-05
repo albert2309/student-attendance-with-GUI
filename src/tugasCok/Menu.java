@@ -147,6 +147,42 @@ public class Menu extends javax.swing.JFrame {
              Admin y = new Admin();
              y.setVisible(true);
          }
+         else if(result == 2){
+                try {
+                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+                Scanner in = new Scanner(inputFile);
+                Scanner lineTokenizer;
+                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+              
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    id = lineTokenizer.next();
+                    username = lineTokenizer.next();
+                    firstName = lineTokenizer.next();
+                    lastName = lineTokenizer.next();
+                    gender = lineTokenizer.next();
+                    dateOfBirth = lineTokenizer.next();
+                    intake = lineTokenizer.next();
+                            if (foundUsername.compareToIgnoreCase(username) == 0) {
+                               Lecturer y = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth,intake);
+                               y.setVisible(true);
+                             }
+                                
+                            }
+                        
+                    
+                in.close();
+            } catch (IOException fileError) {
+                System.out.println("FILE NOT FOUND!!");
+                System.exit(0);
+            }
+
+             Lecturer y = new Lecturer();
+            
+            
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -212,6 +248,7 @@ public class Menu extends javax.swing.JFrame {
 
                 if(Arrays.equals(password.toCharArray(),filledPass)){
                     JOptionPane.showMessageDialog(panel, "Login success");
+                    foundUsername = userName;
                     switch(userType)
                     {
                         case "admin":
@@ -232,6 +269,7 @@ public class Menu extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(panel, "Username not found", "Error", JOptionPane.ERROR_MESSAGE);
         return 0;
 } 
+ private String foundUsername;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

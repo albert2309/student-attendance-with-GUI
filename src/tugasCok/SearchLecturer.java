@@ -247,7 +247,8 @@ public class SearchLecturer extends javax.swing.JFrame {
                     intake = lineTokenizer.next();
                     splittedIntake = intake.split("/");
 
-                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {                        AbstractButton checkButton = buttonList.nextElement();
+                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
+                        AbstractButton checkButton = buttonList.nextElement();
                         if (checkButton.isSelected()) {
                             String searchQuery = jTextField1.getText();
                             if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {

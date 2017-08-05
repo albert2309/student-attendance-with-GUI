@@ -237,7 +237,6 @@ public class Registration extends javax.swing.JFrame {
             String filledDOB = DOBSpinner.getValue().toString();
             String[] splitDOB = filledDOB.split(" ");
             filledDOB = splitDOB[2] + " " + splitDOB[1] + " " + splitDOB[5];
-            System.out.println(DOBSpinner.getValue().toString());
             LocalDate localDate = LocalDate.now();
             String currentDate = DateTimeFormatter.ofPattern("dd MMM yyyy").format(localDate);
             final JPanel panel = new JPanel();
