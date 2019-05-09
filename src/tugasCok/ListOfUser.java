@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tugasCok;
+ package tugasCok;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,19 +14,22 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Albert
  */
-public class viewAll extends javax.swing.JFrame {
+public class ListOfUser extends javax.swing.JFrame {
 
     /**
      * Creates new form viewAll
-     */
-    public viewAll(boolean findLecturer) {
+     */ 
+
+    public ListOfUser(boolean findLecturer) {
         initComponents();
-        if (findLecturer == true) {
-            addRows("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\lecturerInfoList.txt");
+        forLecturer = findLecturer;
+        if (forLecturer == true) {
+            AddRows(".\\src\\tugasCok\\lecturerInfoList.txt");
         } else {
-            addRows("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt");
+            AddRows(".\\src\\tugasCok\\studentInfoList.txt");
             jLabel1.setText("List of students");
         }
+        this.setVisible(true);
     }
 
     /**
@@ -53,14 +56,14 @@ public class viewAll extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "First name", "Last name", "Gender", "Date of birth"
+                "ID", "First name", "Last name", "Gender", "Date of birth", "Intake"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -76,12 +79,13 @@ public class viewAll extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("List of lecturer");
 
         jButton2.setText("Exit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                rejectButton(evt);
             }
         });
 
@@ -93,16 +97,17 @@ public class viewAll extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(256, 256, 256)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(238, 238, 238)
+                                .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,7 +123,7 @@ public class viewAll extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void rejectButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
         removeAll();   
         this.dispose();
@@ -141,32 +146,36 @@ public class viewAll extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(viewAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListOfUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(viewAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListOfUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(viewAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListOfUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(viewAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListOfUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new viewAll(false).setVisible(true);
+                new ListOfUser(false).setVisible(true);
             }
         });
     }
 
-    public void addRows(String directory) {
+    public void AddRows(String directory) {
         //file format:ID;username;first name;last name;gender;DOB
         /*object format: {id, firstname, lastname, gender, DOB} */
+        //Might consider username to be added into the list in the future
         try {
             FileReader inputFile = new FileReader(directory);
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
-            String currLine, id, username, firstName, lastName, gender, dateOfBirth;
+            String currLine, id, username, firstName, lastName, gender, dateOfBirth,intake;
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             while (in.hasNext()) {
                 currLine = in.nextLine();
@@ -178,16 +187,17 @@ public class viewAll extends javax.swing.JFrame {
                 lastName = lineTokenizer.next();
                 gender = lineTokenizer.next();
                 dateOfBirth = lineTokenizer.next();
-                model.addRow(new Object[]{id, firstName, lastName, gender, dateOfBirth});
+                intake = lineTokenizer.next();
+                model.addRow(new Object[]{id, firstName, lastName, gender, dateOfBirth,intake});
             }
-
+               
         } catch (IOException fileError) {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
     }
 
-
+    private boolean forLecturer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

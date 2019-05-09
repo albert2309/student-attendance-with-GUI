@@ -1,4 +1,4 @@
-package tugasCok; 
+package tugasCok;
 
 import tugasCok.ModifyLecturer;
 import java.io.FileReader;
@@ -16,17 +16,18 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/*
+ /*
  * @author Albert
  */
-public class SearchLecturer extends javax.swing.JFrame {
+public class ExistingLecturer extends javax.swing.JFrame {
 
     /**
      * Creates new form Search
      */
-    public SearchLecturer() {
+    public ExistingLecturer() {
         lecturerList = new ArrayList<Lecturer>();
         initComponents();
+        this.setVisible(true);
     }
 
     /**
@@ -59,7 +60,7 @@ public class SearchLecturer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jLabel1.setText("Search a lecturer");
+        jLabel1.setText("Search Lecturer");
 
         jLabel2.setText("Based on:");
 
@@ -224,66 +225,71 @@ public class SearchLecturer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-            try {
-                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
-                Scanner in = new Scanner(inputFile);
-                Scanner lineTokenizer;
-                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-                String[] splittedIntake;
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
-                    model.removeRow(rowCount - 1);
-                }
-                while (in.hasNext()) {
-                    currLine = in.nextLine();
-                    lineTokenizer = new Scanner(currLine);
-                    lineTokenizer.useDelimiter(";");
-                    id = lineTokenizer.next();
-                    username = lineTokenizer.next();
-                    firstName = lineTokenizer.next();
-                    lastName = lineTokenizer.next();
-                    gender = lineTokenizer.next();
-                    dateOfBirth = lineTokenizer.next();
-                    intake = lineTokenizer.next();
-                    splittedIntake = intake.split("/");
+        SearchNow();
+    }//GEN-LAST:event_searchButtonActionPerformed
 
-                    for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
-                        AbstractButton checkButton = buttonList.nextElement();
-                        if (checkButton.isSelected()) {
-                            String searchQuery = jTextField1.getText();
-                            if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareToIgnoreCase(firstName) == 0 && checkButton.getText().compareTo("First Name") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareToIgnoreCase(lastName) == 0 && checkButton.getText().compareTo("Last Name") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareToIgnoreCase(gender) == 0 && checkButton.getText().compareTo("Gender") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
-                                model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                            } else if (checkButton.getText().compareTo("Intake") == 0) {
-                                for(int count = 0; count < splittedIntake.length;count++){
-                                    if (splittedIntake[count].compareToIgnoreCase(searchQuery) == 0) {
-                                        model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
-                                    }
+    public void SearchNow() {
+        try {
+            FileReader inputFile = new FileReader(".\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+            Scanner in = new Scanner(inputFile);
+            Scanner lineTokenizer;
+            String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+            String[] splittedIntake;
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                model.removeRow(rowCount - 1);
+            }
+            while (in.hasNext()) {
+                currLine = in.nextLine();
+                lineTokenizer = new Scanner(currLine);
+                lineTokenizer.useDelimiter(";");
+                id = lineTokenizer.next();
+                username = lineTokenizer.next();
+                firstName = lineTokenizer.next();
+                lastName = lineTokenizer.next();
+                gender = lineTokenizer.next();
+                dateOfBirth = lineTokenizer.next();
+                intake = lineTokenizer.next();
+                splittedIntake = intake.split("/");
+
+                for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
+                    AbstractButton checkButton = buttonList.nextElement();
+                    if (checkButton.isSelected()) {
+                        String searchQuery = jTextField1.getText();
+                        if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(firstName) == 0 && checkButton.getText().compareTo("First Name") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(lastName) == 0 && checkButton.getText().compareTo("Last Name") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(gender) == 0 && checkButton.getText().compareTo("Gender") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (searchQuery.compareToIgnoreCase(dateOfBirth) == 0 && checkButton.getText().compareTo("Date of Birth") == 0) {
+                            model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
+                        } else if (checkButton.getText().compareTo("Intake") == 0) {
+                            for (int count = 0; count < splittedIntake.length; count++) {
+                                if (splittedIntake[count].compareToIgnoreCase(searchQuery) == 0) {
+                                    model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
                                 }
                             }
                         }
                     }
                 }
-                in.close();
-            } catch (IOException fileError) {
-                System.out.println("FILE NOT FOUND!!");
-                System.exit(0);
             }
-        
-    }//GEN-LAST:event_searchButtonActionPerformed
-
+            in.close();
+        } catch (IOException fileError) {
+            System.out.println("FILE NOT FOUND!!");
+            System.exit(0);
+        }
+    }
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
-          boolean error = false;
-       
+        DeleteNow();
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+    public void DeleteNow() {
+        boolean error = false;
+
         if (buttonGroup1.getSelection() == null) {
             JOptionPane.showMessageDialog(panel, "Please select a button on 'Based On' section", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
@@ -297,78 +303,82 @@ public class SearchLecturer extends javax.swing.JFrame {
             error = true;
         }
         int[] listSelected = jTable1.getSelectedRows();
-        if (listSelected.length > 1){
+        if (listSelected.length > 1) {
             JOptionPane.showMessageDialog(panel, "Please select only one row!", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
         }
-        if (!error){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int selectedRow = jTable1.getSelectedRow();
-        String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
-        String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
-        String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
-        String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
-        String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
-        String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
-        String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
-        //  System.out.println(selectedID);
-        final JPanel panel = new JPanel();
-        final JOptionPane optionPane = new JOptionPane(
-                JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.YES_NO_OPTION);
-        optionPane.setWantsInput(true);
-        optionPane.setVisible(true);
-        Object[] options = {"NO", "DELETE"};
-        int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to modify this?"
-                + "\nID:" + selectedID
-                + "\nUsername:" + selectedUser
-                + "\nFirst Name:" + selectedFirst
-                + "\nLast Name:" + selectedLast
-                + "\nGender:" + selectedGender
-                + "\nDate of Birth:" + selectedDate
-                + "\nIntake:" + selectedIntake, "Confirmation",
-                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        if (!error) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int selectedRow = jTable1.getSelectedRow();
+            String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
+            String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
+            String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
+            String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
+            String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
+            String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
+            String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
+            //  System.out.println(selectedID);
+            final JPanel panel = new JPanel();
+            /**
+             * Following source code obtained from (Oracle, n.d)
+             */
+            final JOptionPane optionPane = new JOptionPane(
+                    JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION);
+            optionPane.setWantsInput(true);
+            optionPane.setVisible(true);
+            Object[] options = {"NO", "DELETE"};
+            int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to modify this?"
+                    + "\nID:" + selectedID
+                    + "\nUsername:" + selectedUser
+                    + "\nFirst Name:" + selectedFirst
+                    + "\nLast Name:" + selectedLast
+                    + "\nGender:" + selectedGender
+                    + "\nDate of Birth:" + selectedDate
+                    + "\nIntake:" + selectedIntake, "Confirmation",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-        if (selectedValue == 1) {
-                     for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
-                model.removeRow(rowCount - 1);
-            }
-            try {
-                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
-                Scanner in = new Scanner(inputFile);
-                Scanner lineTokenizer;
-                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-                while (in.hasNext()) {
-                    currLine = in.nextLine();
-                    lineTokenizer = new Scanner(currLine);
-                    lineTokenizer.useDelimiter(";");
-                    id = lineTokenizer.next();
-                    username = lineTokenizer.next();
-                    firstName = lineTokenizer.next();
-                    lastName = lineTokenizer.next();
-                    gender = lineTokenizer.next();
-                    dateOfBirth = lineTokenizer.next();
-                    intake = lineTokenizer.next();
-                    //masukin ke dalam list atau array.
-                    if(selectedID.compareTo(id) != 0) {
-                        Lecturer curr;
-                        curr = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth, intake);
-                        lecturerList.add(curr);
-                    }
+            if (selectedValue == 1) {
+                for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
+                    model.removeRow(rowCount - 1);
                 }
+                try {
+                    FileReader inputFile = new FileReader(".\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+                    Scanner in = new Scanner(inputFile);
+                    Scanner lineTokenizer;
+                    String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
+                    while (in.hasNext()) {
+                        currLine = in.nextLine();
+                        lineTokenizer = new Scanner(currLine);
+                        lineTokenizer.useDelimiter(";");
+                        id = lineTokenizer.next();
+                        username = lineTokenizer.next();
+                        firstName = lineTokenizer.next();
+                        lastName = lineTokenizer.next();
+                        gender = lineTokenizer.next();
+                        dateOfBirth = lineTokenizer.next();
+                        intake = lineTokenizer.next();
+                        //masukin ke dalam list atau array.
+                        if (selectedID.compareTo(id) != 0) {
+                            Lecturer curr;
+                            curr = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                            lecturerList.add(curr);
+                        }
+                    }
                     in.close();
-                    saveFile(selectedUser);
-            } catch (IOException fileError) {
-                System.out.println("FILE NOT FOUND!!");
-                System.exit(0);
+                    SaveFile(selectedUser);
+                } catch (IOException fileError) {
+                    System.out.println("FILE NOT FOUND!!");
+                    System.exit(0);
+                }
+                //setelah masukin. Write ke dalam
             }
-            //setelah masukin. Write ke dalam
         }
-        }
-    }//GEN-LAST:event_DeleteButtonActionPerformed
-
+    }
     private void modifyLecturerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyLecturerActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        CallModifyForm();
+    }//GEN-LAST:event_modifyLecturerActionPerformed
+    public void CallModifyForm() {
         int selectedRow = jTable1.getSelectedRow();
         String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
         String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
@@ -377,58 +387,67 @@ public class SearchLecturer extends javax.swing.JFrame {
         String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
         String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
         String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
-    ModifyLecturer modify = new ModifyLecturer(selectedID,selectedUser,selectedFirst,selectedLast,selectedGender,selectedDate,selectedIntake);
-    modify.setVisible(true);
-    }//GEN-LAST:event_modifyLecturerActionPerformed
+        ModifyLecturer modify = new ModifyLecturer(selectedID, selectedUser, selectedFirst, selectedLast, selectedGender, selectedDate, selectedIntake);
+        modify.setVisible(true);
+    }
 
     @SuppressWarnings("empty-statement")
-    public void saveFile(String selectedUser) throws IOException {
+    public void SaveFile(String selectedUser) throws IOException {
         //Write all the remaining lecturers into texfile
-        FileWriter outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+        FileWriter outputFile = new FileWriter(".\\src\\tugasCok\\lecturerInfoList.txt");
         String currLine = "";
         for (int index = 0; index < lecturerList.size(); index++) {
             currLine = lecturerList.get(index).getIdNumber() + ";" + lecturerList.get(index).getUsername() + ";" + lecturerList.get(index).getFirstName() + ";" + lecturerList.get(index).getLastName() + ";" + lecturerList.get(index).getGender() + ";" + lecturerList.get(index).getDateOfBirth() + ";" + lecturerList.get(index).getIntake();
-            outputFile.write(currLine +'\n');
+            if (index == lecturerList.size() - 1) {
+                outputFile.write(currLine);
+            } else {
+                outputFile.write(currLine + '\n');
+            }
         }
         outputFile.close();
-       //Take a list of users
-//        String loginFile = "D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt";
-        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+        //Take a list of users
+//        String loginFile = ".\\src\\tugasCok\\loginList.txt";
+        FileReader inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
         Scanner in = new Scanner(inputFile);
         Scanner lineTokenizer;
-        
+
         currLine = "";
         ArrayList<String> userList = new ArrayList<>();
         ArrayList<String> passwordList = new ArrayList<>();
         ArrayList<String> userType = new ArrayList<>();
-        
+
         int countUser = 0;
-        String candidateString, pass,user = "";
-        while(in.hasNext()){
+        String candidateString, pass, user = "";
+        while (in.hasNext()) {
             currLine = in.nextLine();
             lineTokenizer = new Scanner(currLine);
             lineTokenizer.useDelimiter(";");
             candidateString = lineTokenizer.next();
-            if(selectedUser.compareTo(candidateString) != 0){  
-            userList.add(candidateString);
-             pass = lineTokenizer.next();
-            passwordList.add(pass);
-            user = lineTokenizer.next();
-            userType.add(user);
-            countUser++;
-            } 
+            if (selectedUser.compareTo(candidateString) != 0) {
+                userList.add(candidateString);
+                pass = lineTokenizer.next();
+                passwordList.add(pass);
+                user = lineTokenizer.next();
+                userType.add(user);
+                countUser++;
+            }
         }
-        
-        outputFile = new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");;
+
+        outputFile = new FileWriter(".\\src\\tugasCok\\loginList.txt");;
         currLine = "";
         for (int index = 0; index < countUser; index++) {
             currLine = userList.get(index) + ";" + passwordList.get(index) + ";" + userType.get(index);
-            outputFile.write(currLine + '\n');
+            if (index == countUser - 1) {
+                outputFile.write(currLine);
+            } else {
+                outputFile.write(currLine + '\n');
+            }
+
         }
         outputFile.close();
         in.close();
-     
-        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -447,21 +466,23 @@ public class SearchLecturer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SearchLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SearchLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SearchLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SearchLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingLecturer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SearchLecturer().setVisible(true);
+                new ExistingLecturer().setVisible(true);
             }
         });
     }

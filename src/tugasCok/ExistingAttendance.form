@@ -53,7 +53,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" pref="424" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="465" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -168,7 +168,7 @@
                 <Column editable="true" title="Status" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox&lt;Attendance&gt; comboBox = new JComboBox&lt;ModifyAttendance.Attendance&gt;(Attendance.values());&#xa;jTable1.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(comboBox));">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="JComboBox&lt;Attendance&gt; comboBox = new JComboBox&lt;ExistingAttendance.Attendance&gt;(Attendance.values());&#xa;jTable1.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(comboBox));">
               <TableColumnModel selectionModel="2">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
@@ -202,7 +202,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Record Attendance"/>
+        <Property name="text" type="java.lang.String" value="Modify"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>

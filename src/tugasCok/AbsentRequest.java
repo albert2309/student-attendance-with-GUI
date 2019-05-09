@@ -5,16 +5,13 @@
  */
 package tugasCok;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -22,15 +19,15 @@ import javax.swing.JPanel;
  *
  * @author Albert
  */
-public class AttendanceRequest extends javax.swing.JFrame {
+public class AbsentRequest extends javax.swing.JFrame {
 
     /**
      * Creates new form AttendanceRequest
      */
-    public AttendanceRequest() {
+    public AbsentRequest() {
         initComponents();
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\absentRequest.txt");
             Scanner in = new Scanner(inputFile);
             String currLine;
             Scanner lineTokenizer;
@@ -49,6 +46,7 @@ public class AttendanceRequest extends javax.swing.JFrame {
         } catch (IOException fileError) {
 
         }
+        this.setVisible(true);
     }
 
     /**
@@ -229,40 +227,24 @@ public class AttendanceRequest extends javax.swing.JFrame {
 
     private void requestComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestComboBoxActionPerformed
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\absentRequest.txt");
             Scanner in = new Scanner(inputFile);
-            String currLine;
-            Scanner lineTokenizer;
-
-            //format:Request ID;student ID;first Name;last Name; date of absent;reason
-            //check take all available number and put the number into arrayList 
-            String absentId = "", studentId = "", firstName = "", lastName = "", dateOfAbsent = "", reason = "";
-            while (in.hasNext()) {
-                currLine = in.nextLine();
-                lineTokenizer = new Scanner(currLine);
-                lineTokenizer.useDelimiter(";");
-                absentId = lineTokenizer.next();
-                if (requestComboBox.getSelectedItem().toString().compareTo(absentId) == 0) {
-                    studentId = lineTokenizer.next();
-                    insertId.setText(studentId);
-                    firstName = lineTokenizer.next();
-                    lastName = lineTokenizer.next();
-                    insertName.setText(firstName + " " + lastName);
-                    dateOfAbsent = lineTokenizer.next();
-                    insertDate.setText(dateOfAbsent);
-                    reason = lineTokenizer.next();
-                    jTextArea1.setText(reason);
-                }
-            }
+            refreshComboBox(in);
+            in.close();
+            inputFile.close();
         } catch (IOException fileError) {
 
         }
     }//GEN-LAST:event_requestComboBoxActionPerformed
 
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
+        ApproveRequest();
+    }//GEN-LAST:event_approveButtonActionPerformed
+    public void ApproveRequest() {
         final JPanel panel = new JPanel();
+        List<String> sessionList = new ArrayList<String>();
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\absentRequest.txt");
             Scanner in = new Scanner(inputFile);
             String currLine;
             Scanner lineTokenizer;
@@ -282,13 +264,13 @@ public class AttendanceRequest extends javax.swing.JFrame {
                     firstName = lineTokenizer.next();
                     lastName = lineTokenizer.next();
                     dateOfAbsent = lineTokenizer.next();
-                    PrintWriter output = new PrintWriter("./tempSessionList.txt");
 
                     int numberOfLine = 0;
                     String textLine = "";
-                    inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\sessionList.txt");
+                    inputFile = new FileReader(".\\src\\tugasCok\\sessionList.txt");
                     in = new Scanner(inputFile);
                     String session, lecturerID, moduleCode, moduleName, intakeCode, startTime, endTime, lectureDate, recordedStudent;
+
                     while (in.hasNext()) {
                         currLine = in.nextLine();
                         lineTokenizer = new Scanner(currLine);
@@ -302,7 +284,6 @@ public class AttendanceRequest extends javax.swing.JFrame {
                         endTime = lineTokenizer.next();
                         lectureDate = lineTokenizer.next();
                         recordedStudent = lineTokenizer.next();
-                        boolean isDuplicate = false;
                         if (moduleCode.compareToIgnoreCase(moduleCode) == 0 && lectureDate.compareTo(dateOfAbsent) == 0) {
                             String[] splitted = recordedStudent.split(",");
                             String tempId = insertId.getText();
@@ -311,7 +292,6 @@ public class AttendanceRequest extends javax.swing.JFrame {
                                 if (tempId.compareTo(splitted[x]) == 0) {
                                     if (splitted[x + 3].compareTo("ABSENT") == 0) {
                                         splitted[x + 3] = "ABSENT_WITH_REASON";
-                                        JOptionPane.showMessageDialog(panel, "Absent changed(input)");
                                         isFound = true;
                                         break;
                                     }
@@ -319,86 +299,68 @@ public class AttendanceRequest extends javax.swing.JFrame {
                             }
                             String constructSession = "";
                             for (int x = 0; x < splitted.length; x++) {
-                                constructSession += splitted[x] + ",";
-                            }
-                            String savedSession = "SES-" + numberOfLine + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
-                            savedSession += startTime + ";" + endTime + ";" + lectureDate + ";" + constructSession;
-                            if (numberOfLine > 0) {
-                                output.append('\n');
-                            }
-                            output.append(savedSession);
-                            numberOfLine++;
-                        } else {
-                            String savedSession = "SES-" + numberOfLine + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
-                            savedSession += startTime + ";" + endTime + ";" + lectureDate + ";" + recordedStudent;
-
-                            if (numberOfLine > 0) {
-                                output.append('\n');
-                            }
-                            output.append(savedSession);
-                            numberOfLine++;
-                        }
-                    }
-                    if (isFound) {
-                        inputFile.close();
-                        //taken from https://stackoverflow.com/questions/39318657/how-to-replace-a-file-in-java to delete a file
-                        File previousFile = new File("./sessionList.txt");
-                        File newFile = new File("./tempSessionList.txt");
-                        output.close();
-                        in.close();
-                        previousFile.delete();
-                        newFile.renameTo(previousFile);
-                        while (in.hasNext()) {
-                            currLine = in.nextLine();
-                            lineTokenizer = new Scanner(currLine);
-                            lineTokenizer.useDelimiter(";");
-                            absentId = lineTokenizer.next();
-                        }
-                        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
-                        in = new Scanner(inputFile);
-                        output = new PrintWriter("./tempAbsentList.txt");
-                        numberOfLine = 0;
-                        while (in.hasNext()) {
-                            currLine = in.nextLine();
-                            lineTokenizer = new Scanner(currLine);
-                            lineTokenizer.useDelimiter(";");
-                            absentId = lineTokenizer.next();
-                            if (requestComboBox.getSelectedItem().toString().compareTo(absentId) != 0) {
-                                if (numberOfLine > 0) {
-                                    output.append('\n');
+                                if (x == splitted.length - 1) {
+                                    constructSession += splitted[x];
+                                } else {
+                                    constructSession += splitted[x] + ",";
                                 }
-                                output.append(currLine);
                             }
-                            numberOfLine++;
+                            recordedStudent = constructSession;
+                            String savedSession = session + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
+                            savedSession += startTime + ";" + endTime + ";" + lectureDate + ";" + recordedStudent;
+                            sessionList.add(savedSession);
+                        } else {
+                            String savedSession = session + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
+                            savedSession += startTime + ";" + endTime + ";" + lectureDate + ";" + recordedStudent;
+                            sessionList.add(savedSession);
                         }
-                        previousFile = new File("./absentRequest.txt");
-                        newFile = new File("./tempAbsentList.txt");
-                        output.close();
-                        in.close();
-                        previousFile.delete();
-                        newFile.renameTo(previousFile);
-                        System.out.println("DONE DELETEING THE REQUEST FILE LIST!!!");
                     }
 
+                    if (isFound) {
+                        PrintWriter output = new PrintWriter(".\\src\\tugasCok\\SessionList.txt");
+                        currLine = "";
+                        for (int index = 0; index < sessionList.size(); index++) {
+                            if (index > 0) {
+                                output.append('\n');
+                            }
+                            output.append(sessionList.get(index));
+                        }
+                        inputFile.close();
+                        output.close();
+                        RemoveRequest();
+                        JOptionPane.showMessageDialog(panel, "Attendance has changed!");
+
+                        break;
+                    }
                 }
-                if (!isFound) {
-                    System.out.println("Session not found! Do manual instead");
+                if (isFound == false) {
+                    JOptionPane.showMessageDialog(panel, "Actual absence is not found! Please ask the student to put valid absent request", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (IOException fileError) {
 
         }
-    }//GEN-LAST:event_approveButtonActionPerformed
-
+    }
     private void rejectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rejectButtonActionPerformed
+        boolean isFound = RemoveRequest();
+        final JPanel panel = new JPanel();
+        if (isFound == false) {
+            JOptionPane.showMessageDialog(panel, "Request not found");
+        } else {
+            JOptionPane.showMessageDialog(panel, "Request rejected");
+        }
+    }//GEN-LAST:event_rejectButtonActionPerformed
+
+    public boolean RemoveRequest() {
+        boolean isFound = false;
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\absentRequest.txt");
             Scanner in = new Scanner(inputFile);
             int numberOfLine = 0;
             String currLine = "", absentId = "";
             Scanner lineTokenizer;
             List<String> line = new ArrayList<String>();
-            
+
             while (in.hasNext()) {
                 currLine = in.nextLine();
                 lineTokenizer = new Scanner(currLine);
@@ -406,25 +368,32 @@ public class AttendanceRequest extends javax.swing.JFrame {
                 absentId = lineTokenizer.next();
                 if (requestComboBox.getSelectedItem().toString().compareTo(absentId) != 0) {
                     line.add(currLine);
+                } else {
+                    isFound = true;
                 }
             }
             PrintWriter output = new PrintWriter(".\\src\\tugasCok\\absentRequest.txt");
-            /*
-            for(int x = 0;x < line.size();x++){
-                 if (numberOfLine > 0) {
-                        output.append('\n');
-                 }
+
+            for (int x = 0; x < line.size(); x++) {
+                if (numberOfLine > 0) {
+                    output.append('\n');
+                }
                 output.append(line.get(x));
                 numberOfLine++;
             }
-            */
+
             output.close();
             inputFile.close();
-            System.out.println("DONE DELETEING THE REQUEST FILE LIST!!!");
         } catch (IOException fileError) {
 
         }
-    }//GEN-LAST:event_rejectButtonActionPerformed
+        
+         if (isFound == false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -443,24 +412,49 @@ public class AttendanceRequest extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AttendanceRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AttendanceRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AttendanceRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AttendanceRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentRequest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AttendanceRequest().setVisible(true);
+                new AbsentRequest().setVisible(true);
             }
         });
     }
 
+    public void refreshComboBox(Scanner in) throws IOException {
+        String currLine;
+        Scanner lineTokenizer;
+        String absentId = "", studentId = "", firstName = "", lastName = "", dateOfAbsent = "", moduleCode = "", reason = "";
+        while (in.hasNext()) {
+            currLine = in.nextLine();
+            lineTokenizer = new Scanner(currLine);
+            lineTokenizer.useDelimiter(";");
+            absentId = lineTokenizer.next();
+            if (requestComboBox.getSelectedItem().toString().compareTo(absentId) == 0) {
+                studentId = lineTokenizer.next();
+                insertId.setText(studentId);
+                firstName = lineTokenizer.next();
+                lastName = lineTokenizer.next();
+                insertName.setText(firstName + " " + lastName);
+                dateOfAbsent = lineTokenizer.next();
+                insertDate.setText(dateOfAbsent);
+                moduleCode = lineTokenizer.next();
+                insertModule.setText(moduleCode);
+                reason = lineTokenizer.next();
+                jTextArea1.setText(reason);
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JButton approveButton;

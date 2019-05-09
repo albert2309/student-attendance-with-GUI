@@ -129,7 +129,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search a lecturer"/>
+        <Property name="text" type="java.lang.String" value="Search Lecturer"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">

@@ -123,7 +123,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(new SpinnerDateModel())"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SimpleDateFormat model = new SimpleDateFormat(&quot;dd.MMM.yy&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="/**&#xa;* Following source code obtained from (Anto, 2015)&#xa;*/&#xa;SimpleDateFormat model = new SimpleDateFormat(&quot;dd.MMM.yy&quot;);"/>
         <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="DateSpinner.setEditor(new JSpinner.DateEditor(DateSpinner, model.toPattern()));&#xa;//DOBSpinner.setEditor(new JSpinner.DateEditor(DateSpinner, &quot;MM/yyyy&quot;));"/>
       </AuxValues>
     </Component>

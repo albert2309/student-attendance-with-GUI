@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- package tugasCok;
+package tugasCok;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+
 /**
  *
  * @author Albert
  */
-public class Menu extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    public Login() {
         initComponents();
     }
 
@@ -138,22 +140,22 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int result = 0;
-        try{
-        result = loadFile();
-        }catch(IOException fileError){}
-         if(result == 1){
-             Admin y = new Admin();
-             y.setVisible(true);
-         }
-         else if(result == 2){
-                try {
-                FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\lecturerInfoList.txt");
+    public void LogIntoTheSystem(){
+           int result = 0;
+        try {
+            result = loadFile();
+        } catch (IOException fileError) {
+        }
+        if (result == 1) {
+            Admin y = new Admin();
+            y.setVisible(true);
+        } else if (result == 2) {
+            try {
+                FileReader inputFile = new FileReader(".\\src\\tugasCok\\lecturerInfoList.txt");
                 Scanner in = new Scanner(inputFile);
                 Scanner lineTokenizer;
                 String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-              
+
                 while (in.hasNext()) {
                     currLine = in.nextLine();
                     lineTokenizer = new Scanner(currLine);
@@ -165,29 +167,59 @@ public class Menu extends javax.swing.JFrame {
                     gender = lineTokenizer.next();
                     dateOfBirth = lineTokenizer.next();
                     intake = lineTokenizer.next();
-                            if (foundUsername.compareToIgnoreCase(username) == 0) {
-                               Lecturer y = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth,intake);
-                               y.setVisible(true);
-                             }
-                                
-                            }
-                        
-                    
+                    if (foundUsername.compareToIgnoreCase(username) == 0) {
+                        Lecturer y = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                        y.setVisible(true);
+                    }
+
+                }
+
                 in.close();
             } catch (IOException fileError) {
                 System.out.println("FILE NOT FOUND!!");
                 System.exit(0);
             }
+        } else if (result == 3) {
+            try {
+                FileReader inputFile = new FileReader(".\\src\\tugasCok\\studentInfoList.txt");
+                Scanner in = new Scanner(inputFile);
+                Scanner lineTokenizer;
+                String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
 
-             Lecturer y = new Lecturer();
-            
-            
-         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    id = lineTokenizer.next();
+                    username = lineTokenizer.next();
+                    firstName = lineTokenizer.next();
+                    lastName = lineTokenizer.next();
+                    gender = lineTokenizer.next();
+                    dateOfBirth = lineTokenizer.next();
+                    intake = lineTokenizer.next();
+                    if (foundUsername.compareToIgnoreCase(username) == 0) {
+                        Student y = new Student(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                        y.setVisible(true);
+                    }
 
+                }
+
+                in.close();
+            } catch (IOException fileError) {
+                System.out.println("FILE NOT FOUND!!");
+                System.exit(0);
+
+            }
+        }
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    System.exit(0);        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       LogIntoTheSystem();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,23 +238,25 @@ public class Menu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Menu().setVisible(true);
+            new Login().setVisible(true);
         });
     }
- public int loadFile() throws IOException{
-        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+
+    public int loadFile() throws IOException {
+        FileReader inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
         Scanner in = new Scanner(inputFile);
         Scanner lineTokenizer;
         String currLine;
@@ -232,25 +266,23 @@ public class Menu extends javax.swing.JFrame {
         String filledUser = "";
         char[] filledPass = "".toCharArray();
         //Take username and password that user put
-         filledUser = jTextField1.getText();
-         filledPass = jPasswordField1.getPassword();
-            
-        
+        filledUser = jTextField1.getText();
+        filledPass = jPasswordField1.getPassword();
+
         final JPanel panel = new JPanel();
-        while(in.hasNext()){
+        while (in.hasNext()) {
             currLine = in.nextLine();
             lineTokenizer = new Scanner(currLine);
             lineTokenizer.useDelimiter(";");
             userName = lineTokenizer.next();
             password = lineTokenizer.next();
             userType = lineTokenizer.next();
-            if(userName.equals(filledUser)){
+            if (userName.equals(filledUser)) {
 
-                if(Arrays.equals(password.toCharArray(),filledPass)){
+                if (Arrays.equals(password.toCharArray(), filledPass)) {
                     JOptionPane.showMessageDialog(panel, "Login success");
                     foundUsername = userName;
-                    switch(userType)
-                    {
+                    switch (userType) {
                         case "admin":
                             return 1;
                         case "lecturer":
@@ -258,8 +290,7 @@ public class Menu extends javax.swing.JFrame {
                         case "student":
                             return 3;
                     }
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(panel, "Wrong password", "Error", JOptionPane.ERROR_MESSAGE);
                     return 0;
                 }
@@ -268,8 +299,8 @@ public class Menu extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(panel, "Username not found", "Error", JOptionPane.ERROR_MESSAGE);
         return 0;
-} 
- private String foundUsername;
+    }
+    private String foundUsername;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

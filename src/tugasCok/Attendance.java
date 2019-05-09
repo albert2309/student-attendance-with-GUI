@@ -10,26 +10,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Albert
  */
-public class ViewAttendance extends javax.swing.JFrame {
+public class Attendance extends javax.swing.JFrame {
 
-    enum Attendance {
-        NOT_INPUT, PRESENT, ABSENT, LATE, ABSENT_WITH_REASON
+    enum AttendanceType {
+        NO_INPUT, PRESENT, ABSENT, LATE, ABSENT_WITH_REASON
     };
 
     /**
      * Creates new form SeeAttendance
      */
-    public ViewAttendance(String id, String currentIntake) {
-        studentList = new ArrayList<String>();
+    public Attendance(String id, String currentIntake) {
+
         studentID = id;
-        //OR FORGET ABOUT BELOW THIS SHIT AND JUST MAKE A TABLE INSTEAD WITHOUT PERCENTAGE
         initComponents();
         //Format of save:Session #;lecturer ID;module code; module name;intake code;start time;end time;lecture date; Sessions
         //Classlist:
@@ -41,13 +39,22 @@ public class ViewAttendance extends javax.swing.JFrame {
         numberOfAbsent
         numberOfAbsentWithReason
          */
-        //BIKIN 2 DIMENSIONAL ARRAY
+        GenerateTable(currentIntake);
+        this.setVisible(true);
+    }
 
+    public void GenerateTable(String currentIntake) {
+        /*
+        *This source code is inspired by (Tofubeer, 2010)
+         */
         List<ArrayList<String>> classList;
         classList = new ArrayList<ArrayList<String>>();
         classList.add(new ArrayList<String>());
         classList.add(new ArrayList<String>());
-        
+
+        /*
+        *This source code is inspired by (Tofubeer, 2010)
+         */
         //USE ADD TO ADD ONE STRING 
         List<ArrayList<Integer>> attendanceList = new ArrayList<ArrayList<Integer>>();
         attendanceList.add(new ArrayList<Integer>());
@@ -55,7 +62,7 @@ public class ViewAttendance extends javax.swing.JFrame {
         attendanceList.add(new ArrayList<Integer>());
         attendanceList.add(new ArrayList<Integer>());
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\sessionList.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\sessionList.txt");
             Scanner in = new Scanner(inputFile);
             String currLine;
             Scanner lineTokenizer;
@@ -81,7 +88,7 @@ public class ViewAttendance extends javax.swing.JFrame {
                 recordedStudent = lineTokenizer.next();
                 boolean isDuplicate = false;
                 if (currentIntake.compareTo(intakeCode) == 0) {
-                    
+
                     for (int y = 0; y < classList.get(0).size(); y++) {
                         if (classList.get(0).get(y).compareTo(moduleCode) == 0) {
                             isDuplicate = true;
@@ -100,7 +107,6 @@ public class ViewAttendance extends javax.swing.JFrame {
                     }
 
                     String[] splitted = recordedStudent.split(",");
-                    String tempId = " ";
 
                     /*
         moduleCode
@@ -110,53 +116,49 @@ public class ViewAttendance extends javax.swing.JFrame {
         numberOfAbsent
         numberOfAbsentWithReason
                      */
-            for (int x = 0; x < splitted.length; x += 4) {
-                        tempId = splitted[x];
-                        if (tempId.compareTo(splitted[x]) == 0) {
-                            jLabel1.setText("Attendance of " + splitted[x+1] + " " + splitted[x+2]);
-                            if (splitted[x + 3].compareTo(Attendance.PRESENT.toString()) == 0) {
-                                
-                                 int temp = attendanceList.get(0).get(storeTheNumber) + 1;
-                                  attendanceList.get(0).set(storeTheNumber, temp);
-                            } else if (splitted[x + 3].compareTo(Attendance.LATE.toString()) == 0) {
-                                 int temp = attendanceList.get(1).get(storeTheNumber) + 1;
-                                  attendanceList.get(1).set(storeTheNumber, temp);
-                            } else if (splitted[x + 3].compareTo(Attendance.ABSENT.toString()) == 0) {
-                                  int temp = attendanceList.get(2).get(storeTheNumber) + 1;
-                                  attendanceList.get(2).set(storeTheNumber, temp);
-                            } else if (splitted[x + 3].compareTo(Attendance.ABSENT_WITH_REASON.toString()) == 0) {
-                                   int temp = attendanceList.get(3).get(storeTheNumber) + 1;
-                                  attendanceList.get(3).set(storeTheNumber, temp);
+                    for (int x = 0; x < splitted.length; x += 4) {
+                        if (studentID.compareTo(splitted[x]) == 0) {
+                            jLabel1.setText("Attendance of " + splitted[x + 1] + " " + splitted[x + 2]);
+                            if (splitted[x + 3].compareTo(AttendanceType.PRESENT.toString()) == 0) {
+                                int temp = attendanceList.get(0).get(storeTheNumber) + 1;
+                                attendanceList.get(0).set(storeTheNumber, temp);
+                            } else if (splitted[x + 3].compareTo(AttendanceType.LATE.toString()) == 0) {
+                                int temp = attendanceList.get(1).get(storeTheNumber) + 1;
+                                attendanceList.get(1).set(storeTheNumber, temp);
+                            } else if (splitted[x + 3].compareTo(AttendanceType.ABSENT.toString()) == 0) {
+                                int temp = attendanceList.get(2).get(storeTheNumber) + 1;
+                                attendanceList.get(2).set(storeTheNumber, temp);
+                            } else if (splitted[x + 3].compareTo(AttendanceType.ABSENT_WITH_REASON.toString()) == 0) {
+                                int temp = attendanceList.get(3).get(storeTheNumber) + 1;
+                                attendanceList.get(3).set(storeTheNumber, temp);
                             } else {
-                                System.out.println("UNKNOWN ATTENDANCE TYPE of: " + tempId);
+                                System.out.println("UNKNOWN ATTENDANCE TYPE of: " + studentID);
                             }
                             break;
                         }
                     }
                 }
             }
-            for(int x = 0; x < attendanceList.get(0).size();x++){
+            for (int x = 0; x < attendanceList.get(0).size(); x++) {
                 int totalClasses = attendanceList.get(0).get(x) + attendanceList.get(1).get(x) + attendanceList.get(2).get(x) + attendanceList.get(3).get(x);
-                double percentage = (attendanceList.get(0).get(x)+ attendanceList.get(1).get(x) * 0.5 + attendanceList.get(3).get(x)) / totalClasses * 100;
-                model.addRow(new Object[]{ classList.get(0).get(x), classList.get(1).get(x),attendanceList.get(0).get(x),attendanceList.get(1).get(x),attendanceList.get(2).get(x),attendanceList.get(3).get(x),totalClasses, percentage}); 
+                double percentage = (attendanceList.get(0).get(x) + attendanceList.get(1).get(x) * 0.5 + attendanceList.get(3).get(x)) / totalClasses * 100;
+                model.addRow(new Object[]{classList.get(0).get(x), classList.get(1).get(x), attendanceList.get(0).get(x), attendanceList.get(1).get(x), attendanceList.get(2).get(x), attendanceList.get(3).get(x), totalClasses, percentage});
             }
-                    
+
             in.close();
-            
+
         } catch (IOException fileError) {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
-                     
-                }
+    }
 
-                /**
-                 * This method is called from within the constructor to
-                 * initialize the form. WARNING: Do NOT modify this code. The
-                 * content of this method is always regenerated by the Form
-                 * Editor.
-                 */
-                @SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -256,26 +258,27 @@ public class ViewAttendance extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Attendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Attendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Attendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Attendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewAttendance("S-0", "UC2F").setVisible(true);
+                new Attendance("S-0", "UC2F").setVisible(true);
             }
         });
     }
     private String studentID;
-    private List<String> studentList;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

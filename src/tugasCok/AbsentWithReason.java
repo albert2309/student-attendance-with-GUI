@@ -33,16 +33,17 @@ Kalau gak ketemu: Langsung tulis.
  *
  * @author Albert
  */
-public class ApplyAbsentWithReason extends javax.swing.JFrame {
+public class AbsentWithReason extends javax.swing.JFrame {
 
     /**
      * Creates new form ApplyAbsentWithReason
      */
-    public ApplyAbsentWithReason(String studentID,String firstName, String lastName) {
+    public AbsentWithReason(String studentID, String firstName, String lastName) {
         initComponents();
         this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.setVisible(true);
     }
 
     /**
@@ -56,6 +57,9 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        /**
+        * Following source code obtained from (Anto, 2015)
+        */
         SimpleDateFormat model = new SimpleDateFormat("dd.MMM.yy");
         DateSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
         jLabel2 = new javax.swing.JLabel();
@@ -171,6 +175,9 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        SendRequest();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void SendRequest() {
         final JPanel panel = new JPanel();
         String filledDate = DateSpinner.getValue().toString();
         String[] splitDate = filledDate.split(" ");
@@ -181,19 +188,18 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(panel, "You must agree with the condition!", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (jTextArea1.getText().isEmpty() == true) {
             JOptionPane.showMessageDialog(panel, "Empty Reason!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (filledDate.compareTo(currentDate) == 0) {
-            JOptionPane.showMessageDialog(panel, "Date must not be today!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            boolean isEmpty = true;
             try {
-                FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt");
+                FileReader inputFile = new FileReader(".\\src\\tugasCok\\absentRequest.txt");
                 Scanner in = new Scanner(inputFile);
                 String currLine;
                 Scanner lineTokenizer;
-                
+
                 ArrayList<Integer> existingId = new ArrayList();
                 //format:Request ID;student ID;first Name;last Name; date of absent;reason
                 //check take all available number and put the number into arrayList 
-               
+
                 String idNumber;
                 String idTag = "";
                 while (in.hasNext()) {
@@ -203,6 +209,7 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
                     idTag = lineTokenizer.next();
                     idNumber = idTag.replaceAll("\\D+", "");
                     existingId.add(Integer.parseInt(idNumber));
+                    isEmpty = false;
                 }
                 Collections.sort(existingId);
                 //search a sorted number on which one is missing
@@ -210,15 +217,16 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
                 for (int x = 0; x < existingId.size(); x++) {
                     if (x == existingId.get(x)) {
                         smallestAvailableNumber = x;
-                        smallestAvailableNumber++;    
+                        smallestAvailableNumber++;
                     }
                 }
-                
+
                 String sentRequest;
                 PrintWriter output;
-                output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\absentRequest.txt", true));
-                sentRequest = "ABS-" + smallestAvailableNumber + ";" + this.studentID + ";" + this.firstName + ";" + this.lastName + ";" + filledDate + ";"+ jTextArea1.getText().replaceAll("\n", " ").replaceAll("\t", " ").trim();
-                if (smallestAvailableNumber > 0) {
+
+                output = new PrintWriter(new FileWriter(".\\src\\tugasCok\\absentRequest.txt", true));
+                sentRequest = "ABS-" + smallestAvailableNumber + ";" + this.studentID + ";" + this.firstName + ";" + this.lastName + ";" + filledDate + ";" + jTextField1.getText() + ";" + jTextArea1.getText().replaceAll("\n", " ").replaceAll("\t", " ").trim();
+                if (isEmpty == false) {
                     output.append('\n');
                 }
                 output.append(sentRequest);
@@ -230,9 +238,7 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
             }
         }
 
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         setVisible(false);
         removeAll();
@@ -256,20 +262,21 @@ public class ApplyAbsentWithReason extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ApplyAbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ApplyAbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ApplyAbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ApplyAbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AbsentWithReason.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ApplyAbsentWithReason("S-0","devira","putri").setVisible(true);
+                new AbsentWithReason("S-0", "devira", "putri").setVisible(true);
             }
         });
     }

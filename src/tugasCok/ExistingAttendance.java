@@ -12,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -27,13 +29,16 @@ import javax.swing.JComboBox;
  *
  * @author Albert
  */
-public class ModifyAttendance extends javax.swing.JFrame {
-     enum Attendance{NOT_INPUT,PRESENT, ABSENT, LATE};
-   
+public class ExistingAttendance extends javax.swing.JFrame {
+
+    enum Attendance {
+        NO_INPUT, PRESENT, ABSENT, LATE
+    };
+
     /**
      * Creates new form Session
      */
-    public ModifyAttendance(String session, String lecturerID, String moduleCode, String moduleName, String intakeCode, String startTime, String endTime, String lectureDate, String studentList) {
+    public ExistingAttendance(String session, String lecturerID, String moduleCode, String moduleName, String intakeCode, String startTime, String endTime, String lectureDate, String studentList) {
         this.setVisible(true);
         initComponents();
         this.lecturerID = lecturerID;
@@ -44,7 +49,6 @@ public class ModifyAttendance extends javax.swing.JFrame {
         this.startTime = startTime;
         this.endTime = endTime;
         this.lectureDate = lectureDate;
-        this.studentList = studentList;
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         ModuleText.setText(moduleCode);
         ModuleNameText.setText(moduleName);
@@ -53,9 +57,9 @@ public class ModifyAttendance extends javax.swing.JFrame {
         StartText.setText(startTime);
         DateText.setText(lectureDate);
         //tinggal masukin row ke dalam table
-        
+
         String[] splitted = studentList.split(",");
-        String tempId  = " ", tempFirst  = " ", tempLast  = " ", tempResult = " ";
+        String tempId = " ", tempFirst = " ", tempLast = " ", tempResult = " ";
         for (int x = 0; x < splitted.length; x++) {
             if (x % 4 == 0) {
                 tempId = splitted[x];
@@ -65,15 +69,18 @@ public class ModifyAttendance extends javax.swing.JFrame {
                 tempLast = splitted[x];
             } else if (x % 4 == 3) {
                 tempResult = splitted[x];
-                if(tempResult.compareTo("PRESENT") == 0)
-                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.PRESENT});
-                else if(tempResult.compareTo("ABSENT") == 0)
-                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.ABSENT});
-                else if(tempResult.compareTo("LATE") == 0)
-                model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.LATE});
+                if (tempResult.compareTo("PRESENT") == 0) {
+                    model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.PRESENT});
+                } else if (tempResult.compareTo("ABSENT") == 0) {
+                    model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.ABSENT});
+                } else if (tempResult.compareTo("LATE") == 0) {
+                    model.addRow(new Object[]{tempId, tempFirst, tempLast, Attendance.LATE});
+                } else if (tempResult.compareTo("ABSENT_WITH_REASON") == 0) {
+                    model.addRow(new Object[]{tempId, tempFirst, tempLast, "ABSENT_WITH_REASON"});
+                }
             }
         }
-        
+        this.setVisible(true);
     }
 
     /**
@@ -147,10 +154,10 @@ public class ModifyAttendance extends javax.swing.JFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        JComboBox<Attendance> comboBox = new JComboBox<ModifyAttendance.Attendance>(Attendance.values());
+        JComboBox<Attendance> comboBox = new JComboBox<ExistingAttendance.Attendance>(Attendance.values());
         jTable1.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(comboBox));
 
-        jButton1.setText("Record Attendance");
+        jButton1.setText("Modify");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -205,7 +212,7 @@ public class ModifyAttendance extends javax.swing.JFrame {
                         .addComponent(jButton1)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(jLabel1)
@@ -255,19 +262,20 @@ public class ModifyAttendance extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ModifyAttendance();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void ModifyAttendance() {
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\sessionList.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\sessionList.txt");
             Scanner in = new Scanner(inputFile);
             String currLine;
             Scanner lineTokenizer;
-            int numberOfLine = 0;
             final JPanel panel = new JPanel();
 
             while (in.hasNext()) {
                 currLine = in.nextLine();
                 lineTokenizer = new Scanner(currLine);
                 lineTokenizer.useDelimiter(";");
-
             }
             String studentList = "";
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -278,7 +286,7 @@ public class ModifyAttendance extends javax.swing.JFrame {
                 }
                 for (int colCount = 0; colCount < model.getColumnCount() && isMIssing == false; colCount++) {
 
-                    if (model.getValueAt(rowCount, colCount).toString().compareTo("---") == 0) {
+                    if (model.getValueAt(rowCount, colCount).toString().compareTo("NO_INPUT") == 0) {
                         JOptionPane.showMessageDialog(panel, "Attendance list is not properly filled", "Error", JOptionPane.ERROR_MESSAGE);
                         isMIssing = true;
                         break;
@@ -295,31 +303,39 @@ public class ModifyAttendance extends javax.swing.JFrame {
             in.close();
             if (isMIssing == false) {
                 String filledDate = lectureDate;
-                String[] tempSplit = filledDate.split(" ");
-                filledDate = tempSplit[2] + " " + tempSplit[1] + " " + tempSplit[5];
                 String filledStart = startTime;
-                tempSplit = filledStart.split(" ");
-                filledStart = tempSplit[3];
-                tempSplit = filledStart.split(":");
-                filledStart = tempSplit[0] + ":" + tempSplit[1];
-
                 String filledEnd = endTime;
-                tempSplit = filledEnd.split(" ");
-                filledEnd = tempSplit[3];
-                tempSplit = filledEnd.split(":");
-                filledEnd = tempSplit[0] + ":" + tempSplit[1];
-                System.out.println(filledStart);
                 //Format of save:Session #;lecturer ID;module code; module name;intake code;start time;end time;lecture date; Sessions
-                String savedSession = "SES-" + numberOfLine + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
+                String savedSession = sessionID + ";" + lecturerID + ";" + moduleCode + ";" + moduleName + ";" + intakeCode + ";";
                 savedSession += filledStart + ";" + filledEnd + ";" + filledDate + ";" + studentList;
-                System.out.println(savedSession);
-                PrintWriter output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\sessionList.txt", true));
-                if (numberOfLine > 0) {
-                    output.append('\n');
+                List<String> sessionList = new ArrayList<String>();
+                inputFile = new FileReader(".\\src\\tugasCok\\sessionList.txt");
+                in = new Scanner(inputFile);
+                String checkSession = "";
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    checkSession = lineTokenizer.next();
+                    if (checkSession.compareTo(sessionID) == 0) {
+                        sessionList.add(savedSession);
+                    } else {
+                        sessionList.add(currLine);
+                    }
                 }
-                output.append(savedSession);
+                in.close();
+                PrintWriter output = new PrintWriter(".\\src\\tugasCok\\SessionList.txt");
+                currLine = "";
+                for (int index = 0; index < sessionList.size(); index++) {
+                    if (index > 0) {
+                        output.append('\n');
+                    }
+                    output.append(sessionList.get(index));
+                }
+
                 output.close();
                 JOptionPane.showMessageDialog(panel, "Session recorded");
+                in.close();
             }
 
         } catch (IOException fileError) {
@@ -327,12 +343,11 @@ public class ModifyAttendance extends javax.swing.JFrame {
             System.exit(0);
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
         removeAll();
-        this.dispose();      
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -352,14 +367,16 @@ public class ModifyAttendance extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModifyAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingAttendance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -378,8 +395,6 @@ public class ModifyAttendance extends javax.swing.JFrame {
     private String endTime;
     private String intakeCode;
     private String lectureDate;
-    private String studentList;
-    private String[] studentIdNumber; //maybe we can use List<Students> instead for easy retrieval by reusing code from the searchStudent. 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DateText;
     private javax.swing.JLabel EndText;

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Albert
  */
 public class ModifyStudent extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form ModifyStudent
      */
@@ -42,7 +42,9 @@ public class ModifyStudent extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(ModifyStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //temporary convert date format
+        /**
+         * Following source code obtained from (Anto, 2015)
+         */
         SimpleDateFormat model = new SimpleDateFormat("dd.MM.yy");
         DOBSpinner.setEditor(new JSpinner.DateEditor(DOBSpinner, model.toPattern()));
 
@@ -60,7 +62,7 @@ public class ModifyStudent extends javax.swing.JFrame {
         }
 
         try {
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
             String currLine = "";
@@ -81,6 +83,7 @@ public class ModifyStudent extends javax.swing.JFrame {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
+        this.setVisible(true);
     }
 
     /**
@@ -109,6 +112,9 @@ public class ModifyStudent extends javax.swing.JFrame {
         male = new javax.swing.JRadioButton();
         female = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
+        /*
+        * Following source code obtained from (Anto, 2015)
+        */
         SimpleDateFormat model = new SimpleDateFormat("dd.MMM.yy");
         DOBSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
         jLabel5 = new javax.swing.JLabel();
@@ -244,8 +250,11 @@ public class ModifyStudent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
+        ModifyInfo();
+    }//GEN-LAST:event_modifyButtonActionPerformed
+    public void ModifyInfo() {
         try {
-            
+
             Scanner lineTokenizer;
             String currLine;
             String userName;
@@ -294,113 +303,118 @@ public class ModifyStudent extends javax.swing.JFrame {
             if (filledDOB.compareTo(currentDate) == 0) {
                 JOptionPane.showMessageDialog(panel, "Date must not be today!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
+
             boolean hasExist = false;
             if (Arrays.equals(filledUser.toCharArray(), filledPass)) {
                 JOptionPane.showMessageDialog(panel, "Username must not same as password", "Error", JOptionPane.ERROR_MESSAGE);
                 hasExist = true;
             }
-            FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+            FileReader inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
             Scanner in = new Scanner(inputFile);
             while (in.hasNext() && hasExist == false) {
                 currLine = in.nextLine();
                 lineTokenizer = new Scanner(currLine);
                 lineTokenizer.useDelimiter(";");
                 userName = lineTokenizer.next();
-                if (userName.equals(filledUser)) {
+                if (userName.compareTo(filledUser) == 0 && userName.compareTo(originalUsername) != 0) {
                     JOptionPane.showMessageDialog(panel, "Username has exist", "Error", JOptionPane.ERROR_MESSAGE);
                     hasExist = true;
                 }
             }
-            
-            if(!hasExist){
-            studentList = new ArrayList<Student>();
-            //DATE CHECK SYSTEM MISSING
+
+            if (!hasExist) {
+                studentList = new ArrayList<Student>();
+                //DATE CHECK SYSTEM MISSING
                 try {
-                    inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt");
+                    inputFile = new FileReader(".\\src\\tugasCok\\studentInfoList.txt");
                     in = new Scanner(inputFile);
                     String id, username, firstName, lastName, gender, dateOfBirth, intake;
                     Student curr;
-                while (in.hasNext()) {
-                    currLine = in.nextLine();
-                    lineTokenizer = new Scanner(currLine);
-                    lineTokenizer.useDelimiter(";");
-                    id = lineTokenizer.next();
-                    username = lineTokenizer.next();
-                    firstName = lineTokenizer.next();
-                    lastName = lineTokenizer.next();
-                    gender = lineTokenizer.next();
-                    dateOfBirth = lineTokenizer.next();
-                    intake = lineTokenizer.next();
-                    if(targetedID.equals(id))
-                        curr = new Student(targetedID,filledUser,filledFirst, filledLastName, filledGender, filledDOB, filledIntake);
-                    else
-                        curr = new Student(id, username, firstName, lastName, gender, dateOfBirth, intake);
-                    studentList.add(curr);                    
-                }
-                
+                    while (in.hasNext()) {
+                        currLine = in.nextLine();
+                        lineTokenizer = new Scanner(currLine);
+                        lineTokenizer.useDelimiter(";");
+                        id = lineTokenizer.next();
+                        username = lineTokenizer.next();
+                        firstName = lineTokenizer.next();
+                        lastName = lineTokenizer.next();
+                        gender = lineTokenizer.next();
+                        dateOfBirth = lineTokenizer.next();
+                        intake = lineTokenizer.next();
+                        if (targetedID.equals(id)) {
+                            curr = new Student(targetedID, filledUser, filledFirst, filledLastName, filledGender, filledDOB, filledIntake);
+                        } else {
+                            curr = new Student(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                        }
+                        studentList.add(curr);
+                    }
+
                 } catch (IOException fileError) {
                     System.out.println("FILE NOT FOUND!!");
                     System.exit(0);
                 }
-                
+
                 //The int variable takes the smallest number that is available so any empty number will be filled rather than left it as a gap.
                 //However, the number is taken by through parsing of idNumber in each line.
-        FileWriter outputFile;
-        currLine = "";
-        outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
-        for (int index = 0; index < studentList.size(); index++) {
-            currLine = studentList.get(index).getIdNumber() + ";" + studentList.get(index).getUsername() + ";" + studentList.get(index).getFirstName() + ";" + studentList.get(index).getLastName() + ";" + studentList.get(index).getGender() + ";" + studentList.get(index).getDateOfBirth() + ";" + studentList.get(index).getIntake();
-            outputFile.write(currLine +'\n');
-        }
-        outputFile.close();
-        currLine = "";
-        ArrayList<String> userList = new ArrayList<>();
-        ArrayList<String> passwordList = new ArrayList<>();
-        ArrayList<String> userTypeList = new ArrayList<>();    
-        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
-        in = new Scanner(inputFile);
-        int countUser = 0;
-        String candidateString, pass,userType = "";
-        while(in.hasNext()){
-            currLine = in.nextLine();
-            lineTokenizer = new Scanner(currLine);
-            lineTokenizer.useDelimiter(";");
-            candidateString = lineTokenizer.next();
-            if(originalUsername.compareTo(candidateString) == 0){  
-               userList.add(filledUser);
-               passwordList.add(String.valueOf(filledPass));
-               userTypeList.add("student");
+                FileWriter outputFile;
+                currLine = "";
+                outputFile = new FileWriter(".\\src\\\\tugasCok\\\\studentInfoList.txt");
+                for (int index = 0; index < studentList.size(); index++) {
+                    currLine = studentList.get(index).getIdNumber() + ";" + studentList.get(index).getUsername() + ";" + studentList.get(index).getFirstName() + ";" + studentList.get(index).getLastName() + ";" + studentList.get(index).getGender() + ";" + studentList.get(index).getDateOfBirth() + ";" + studentList.get(index).getIntake();
+                    if (index > 0) {
+                        outputFile.append('\n');
+                    }
+                    outputFile.append(currLine);
+                }
+                outputFile.close();
+                currLine = "";
+                ArrayList<String> userList = new ArrayList<>();
+                ArrayList<String> passwordList = new ArrayList<>();
+                ArrayList<String> userTypeList = new ArrayList<>();
+                inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
+                in = new Scanner(inputFile);
+                int countUser = 0;
+                String candidateString, pass, userType = "";
+                while (in.hasNext()) {
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    candidateString = lineTokenizer.next();
+                    if (originalUsername.compareTo(candidateString) == 0) {
+                        userList.add(filledUser);
+                        passwordList.add(String.valueOf(filledPass));
+                        userTypeList.add("student");
+                    } else {
+                        userList.add(candidateString);
+                        pass = lineTokenizer.next();
+                        passwordList.add(pass);
+                        userType = lineTokenizer.next();
+                        userTypeList.add(userType);
+                    }
+                    countUser++;
+                }
+                in.close();
+                try {
+                    outputFile = new FileWriter(".\\src\\tugasCok\\loginList.txt");;
+                    currLine = "";
+                    for (int index = 0; index < countUser; index++) {
+                        currLine = userList.get(index) + ";" + passwordList.get(index) + ";" + userTypeList.get(index);
+                        if (index > 0) {
+                            outputFile.append('\n');
+                        }
+                        outputFile.append(currLine);
+                    }
+                    outputFile.close();
+                    JOptionPane.showMessageDialog(panel, "Modify success");
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ModifyStudent.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            else{
-            userList.add(candidateString);
-            pass = lineTokenizer.next();
-            passwordList.add(pass);
-            userType = lineTokenizer.next();
-            userTypeList.add(userType);
-            }
-            countUser++; 
+        } catch (IOException fileError) {
+            System.out.println("FILE NOT FOUND!!");
+            System.exit(0);
         }
-        in.close();
-        try{
-        outputFile = new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");;
-        currLine = "";
-        for (int index = 0; index < countUser; index++) {
-            currLine = userList.get(index) + ";" + passwordList.get(index) + ";" + userTypeList.get(index);
-            outputFile.write(currLine + '\n');
-        }
-        outputFile.close();
-        JOptionPane.showMessageDialog(panel, "Modify success");
-            } catch (FileNotFoundException ex) {
-            Logger.getLogger(ModifyStudent.class.getName()).log(Level.SEVERE, null, ex);
-             }
-            }
-         }catch (IOException fileError) {
-                System.out.println("FILE NOT FOUND!!");
-                System.exit(0);
-        }
-    }//GEN-LAST:event_modifyButtonActionPerformed
-
+    }
     private void CancelButtoncancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtoncancel
         setVisible(false);
         removeAll();

@@ -176,7 +176,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(new SpinnerDateModel())"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SimpleDateFormat model = new SimpleDateFormat(&quot;dd.MMM.yy&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="/**&#xa;* Following source code obtained from (Anto, 2015)&#xa;*/&#xa;SimpleDateFormat model = new SimpleDateFormat(&quot;dd.MMM.yy&quot;);"/>
         <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="DOBSpinner.setEditor(new JSpinner.DateEditor(DOBSpinner, model.toPattern()));&#xa;//DOBSpinner.setEditor(new JSpinner.DateEditor(DOBSpinner, &quot;MM/yyyy&quot;));"/>
       </AuxValues>
     </Component>
@@ -233,7 +233,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Use comma to seperate multiple intakes"/>
+        <Property name="text" type="java.lang.String" value="Use (/) for multiple intake. Lecturer only"/>
       </Properties>
     </Component>
   </SubComponents>

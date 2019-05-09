@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tugasCok; 
+package tugasCok;
 
 import tugasCok.ModifyLecturer;
 import java.io.FileReader;
@@ -20,13 +20,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Albert
  */
-public class SearchStudent extends javax.swing.JFrame {
+public class ExistingStudent extends javax.swing.JFrame {
 
     /**
      * Creates new form SearchStudent
      */
-    public SearchStudent() {
+    public ExistingStudent() {
         initComponents();
+        this.setVisible(true);
     }
 
     /**
@@ -40,8 +41,8 @@ public class SearchStudent extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        resultTable = new javax.swing.JTable();
+        keyword = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
         intakeButton = new javax.swing.JRadioButton();
         jButton2 = new javax.swing.JButton();
@@ -59,7 +60,7 @@ public class SearchStudent extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        resultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -75,10 +76,10 @@ public class SearchStudent extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        resultTable.setColumnSelectionAllowed(true);
+        resultTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(resultTable);
+        resultTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         searchButton.setText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +88,7 @@ public class SearchStudent extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(intakeButton);
         intakeButton.setText("Intake");
 
         jButton2.setText("Back");
@@ -96,16 +98,19 @@ public class SearchStudent extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(firstButton);
         firstButton.setText("First Name");
         firstButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        buttonGroup1.add(idButton);
         idButton.setText("ID");
         idButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        buttonGroup1.add(genderButton);
         genderButton.setText("Gender");
         genderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jLabel1.setText("Search a lecturer");
+        jLabel1.setText("Search a Student");
 
         modifyLecturer.setText("Modify");
         modifyLecturer.addActionListener(new java.awt.event.ActionListener() {
@@ -114,10 +119,13 @@ public class SearchStudent extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(userButton);
         userButton.setText("Username");
 
+        buttonGroup1.add(lastButton);
         lastButton.setText("Last Name");
 
+        buttonGroup1.add(dobButton);
         dobButton.setText("Date of Birth");
 
         DeleteButton.setText("Delete");
@@ -130,6 +138,11 @@ public class SearchStudent extends javax.swing.JFrame {
         jLabel2.setText("Based on:");
 
         jButton1.setText("See Attendance");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,7 +156,7 @@ public class SearchStudent extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel2))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(keyword, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -190,7 +203,7 @@ public class SearchStudent extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(keyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -221,12 +234,15 @@ public class SearchStudent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        SearchNow();
+    }//GEN-LAST:event_searchButtonActionPerformed
+    public void SearchNow() {
         try {
-            FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
+            FileReader inputFile = new FileReader(".\\src\\\\tugasCok\\\\studentInfoList.txt");
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
             String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
             for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
                 model.removeRow(rowCount - 1);
             }
@@ -245,7 +261,7 @@ public class SearchStudent extends javax.swing.JFrame {
                 for (Enumeration<AbstractButton> buttonList = buttonGroup1.getElements(); buttonList.hasMoreElements();) {
                     AbstractButton checkButton = buttonList.nextElement();
                     if (checkButton.isSelected()) {
-                        String searchQuery = jTextField1.getText();
+                        String searchQuery = keyword.getText();
                         if (searchQuery.compareToIgnoreCase(id) == 0 && checkButton.getText().compareTo("ID") == 0) {
                             model.addRow(new Object[]{id, username, firstName, lastName, gender, dateOfBirth, intake});
                         } else if (searchQuery.compareTo(username) == 0 && checkButton.getText().compareTo("Username") == 0) {
@@ -270,8 +286,7 @@ public class SearchStudent extends javax.swing.JFrame {
             System.exit(0);
         }
 
-    }//GEN-LAST:event_searchButtonActionPerformed
-
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
         removeAll();
@@ -279,73 +294,80 @@ public class SearchStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void modifyLecturerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyLecturerActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int selectedRow = jTable1.getSelectedRow();
-        String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
-        String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
-        String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
-        String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
-        String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
-        String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
-        String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
-        ModifyLecturer modify = new ModifyLecturer(selectedID,selectedUser,selectedFirst,selectedLast,selectedGender,selectedDate,selectedIntake);
-        modify.setVisible(true);
+        CallModifyForm();
     }//GEN-LAST:event_modifyLecturerActionPerformed
-
+    public void CallModifyForm() {
+        int selectedRow = resultTable.getSelectedRow();
+        String selectedID = resultTable.getValueAt(selectedRow, 0).toString();
+        String selectedUser = resultTable.getValueAt(selectedRow, 1).toString();
+        String selectedFirst = resultTable.getValueAt(selectedRow, 2).toString();
+        String selectedLast = resultTable.getValueAt(selectedRow, 3).toString();
+        String selectedGender = resultTable.getValueAt(selectedRow, 4).toString();
+        String selectedDate = resultTable.getValueAt(selectedRow, 5).toString();
+        String selectedIntake = resultTable.getValueAt(selectedRow, 6).toString();
+        ModifyStudent modify = new ModifyStudent(selectedID, selectedUser, selectedFirst, selectedLast, selectedGender, selectedDate, selectedIntake);
+        modify.setVisible(true);
+    }
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        DeleteNow();
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+    public void DeleteNow() {
         boolean error = false;
-
+        studentList = new ArrayList<Student>();
         if (buttonGroup1.getSelection() == null) {
             JOptionPane.showMessageDialog(panel, "Please select a button on 'Based On' section", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
         }
-        if (jTextField1.getText().isEmpty() == true) {
+        if (keyword.getText().isEmpty() == true) {
             JOptionPane.showMessageDialog(panel, "Please fill in the search bar", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
         }
-        if (jTable1.getSelectionModel().isSelectionEmpty() == true) {
+        if (resultTable.getSelectionModel().isSelectionEmpty() == true) {
             JOptionPane.showMessageDialog(panel, "Please select a row on result", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
         }
-        int[] listSelected = jTable1.getSelectedRows();
-        if (listSelected.length > 1){
+        int[] listSelected = resultTable.getSelectedRows();
+        if (listSelected.length > 1) {
             JOptionPane.showMessageDialog(panel, "Please select only one row!", "Error", JOptionPane.ERROR_MESSAGE);
             error = true;
         }
-        if (!error){
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int selectedRow = jTable1.getSelectedRow();
-            String selectedID = jTable1.getValueAt(selectedRow, 0).toString();
-            String selectedUser = jTable1.getValueAt(selectedRow, 1).toString();
-            String selectedFirst = jTable1.getValueAt(selectedRow, 2).toString();
-            String selectedLast = jTable1.getValueAt(selectedRow, 3).toString();
-            String selectedGender = jTable1.getValueAt(selectedRow, 4).toString();
-            String selectedDate = jTable1.getValueAt(selectedRow, 5).toString();
-            String selectedIntake = jTable1.getValueAt(selectedRow, 6).toString();
+        if (!error) {
+            DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
+            int selectedRow = resultTable.getSelectedRow();
+            String selectedID = resultTable.getValueAt(selectedRow, 0).toString();
+            String selectedUser = resultTable.getValueAt(selectedRow, 1).toString();
+            String selectedFirst = resultTable.getValueAt(selectedRow, 2).toString();
+            String selectedLast = resultTable.getValueAt(selectedRow, 3).toString();
+            String selectedGender = resultTable.getValueAt(selectedRow, 4).toString();
+            String selectedDate = resultTable.getValueAt(selectedRow, 5).toString();
+            String selectedIntake = resultTable.getValueAt(selectedRow, 6).toString();
             //  System.out.println(selectedID);
             final JPanel panel = new JPanel();
+            /**
+             * Following source code obtained from (Oracle, n.d)
+             */
             final JOptionPane optionPane = new JOptionPane(
-                JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.YES_NO_OPTION);
+                    JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION);
             optionPane.setWantsInput(true);
             optionPane.setVisible(true);
             Object[] options = {"NO", "DELETE"};
             int selectedValue = JOptionPane.showOptionDialog(panel, "Do you want to modify this?"
-                + "\nID:" + selectedID
-                + "\nUsername:" + selectedUser
-                + "\nFirst Name:" + selectedFirst
-                + "\nLast Name:" + selectedLast
-                + "\nGender:" + selectedGender
-                + "\nDate of Birth:" + selectedDate
-                + "\nIntake:" + selectedIntake, "Confirmation",
-                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+                    + "\nID:" + selectedID
+                    + "\nUsername:" + selectedUser
+                    + "\nFirst Name:" + selectedFirst
+                    + "\nLast Name:" + selectedLast
+                    + "\nGender:" + selectedGender
+                    + "\nDate of Birth:" + selectedDate
+                    + "\nIntake:" + selectedIntake, "Confirmation",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
             if (selectedValue == 1) {
                 for (int rowCount = model.getRowCount(); model.getRowCount() != 0; rowCount--) {
                     model.removeRow(rowCount - 1);
                 }
                 try {
-                    FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
+                    FileReader inputFile = new FileReader(".\\src\\\\tugasCok\\\\studentInfoList.txt");
                     Scanner in = new Scanner(inputFile);
                     Scanner lineTokenizer;
                     String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
@@ -361,14 +383,14 @@ public class SearchStudent extends javax.swing.JFrame {
                         dateOfBirth = lineTokenizer.next();
                         intake = lineTokenizer.next();
                         //masukin ke dalam list atau array.
-                        if(selectedID.compareTo(id) != 0) {
-                            Lecturer curr;
-                            curr = new Lecturer(id, username, firstName, lastName, gender, dateOfBirth, intake);
-                            lecturerList.add(curr);
+                        if (selectedID.compareTo(id) != 0) {
+                            Student curr;
+                            curr = new Student(id, username, firstName, lastName, gender, dateOfBirth, intake);
+                            studentList.add(curr);
                         }
                     }
                     in.close();
-                    saveFile(selectedUser);
+                    SaveFile(selectedUser);
                 } catch (IOException fileError) {
                     System.out.println("FILE NOT FOUND!!");
                     System.exit(0);
@@ -376,55 +398,68 @@ public class SearchStudent extends javax.swing.JFrame {
                 //setelah masukin. Write ke dalam
             }
         }
-    }//GEN-LAST:event_DeleteButtonActionPerformed
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        SeeAttendance();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void SeeAttendance() {
+        int selectedRow = resultTable.getSelectedRow();
+        String selectedID = resultTable.getValueAt(selectedRow, 0).toString();
+        String selectedIntake = resultTable.getValueAt(selectedRow, 6).toString();
+        Attendance x = new Attendance(selectedID, selectedIntake);
+    }
 
-    public void saveFile(String selectedUser) throws IOException {
+    public void SaveFile(String selectedUser) throws IOException {
         //Write all the remaining lecturers into texfile
-        FileWriter outputFile = new FileWriter("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
+        FileWriter outputFile = new FileWriter(".\\src\\tugasCok\\studentInfoList.txt");
         String currLine = "";
-        for (int index = 0; index < lecturerList.size(); index++) {
-            currLine = lecturerList.get(index).getIdNumber() + ";" + lecturerList.get(index).getUsername() + ";" + lecturerList.get(index).getFirstName() + ";" + lecturerList.get(index).getLastName() + ";" + lecturerList.get(index).getGender() + ";" + lecturerList.get(index).getDateOfBirth() + ";" + lecturerList.get(index).getIntake();
-            outputFile.write(currLine +'\n');
+        for (int index = 0; index < studentList.size(); index++) {
+            currLine = studentList.get(index).getIdNumber() + ";" + studentList.get(index).getUsername() + ";" + studentList.get(index).getFirstName() + ";" + studentList.get(index).getLastName() + ";" + studentList.get(index).getGender() + ";" + studentList.get(index).getDateOfBirth() + ";" + studentList.get(index).getIntake();
+            if (index > 0) {
+                outputFile.append('\n');
+            }
+            outputFile.append(currLine);
         }
         outputFile.close();
-       //Take a list of users
-//        String loginFile = "D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt";
-        FileReader inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+        //Take a list of users
+        FileReader inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
         Scanner in = new Scanner(inputFile);
         Scanner lineTokenizer;
-        
+
         currLine = "";
         ArrayList<String> userList = new ArrayList<>();
         ArrayList<String> passwordList = new ArrayList<>();
         ArrayList<String> userType = new ArrayList<>();
-        
-        int countUser = 0;
-        String candidateString, pass,user = "";
-        while(in.hasNext()){
+
+        String candidateString, pass, user = "";
+        while (in.hasNext()) {
             currLine = in.nextLine();
             lineTokenizer = new Scanner(currLine);
             lineTokenizer.useDelimiter(";");
             candidateString = lineTokenizer.next();
-            if(selectedUser.compareTo(candidateString) != 0){  
-            userList.add(candidateString);
-             pass = lineTokenizer.next();
-            passwordList.add(pass);
-            user = lineTokenizer.next();
-            userType.add(user);
-            countUser++;
-            } 
+            if (selectedUser.compareTo(candidateString) != 0) {
+                userList.add(candidateString);
+                pass = lineTokenizer.next();
+                passwordList.add(pass);
+                user = lineTokenizer.next();
+                userType.add(user);
+            }
         }
-        
-        outputFile = new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");;
+        outputFile.close();
+        outputFile = new FileWriter(".\\src\\tugasCok\\loginList.txt");
         currLine = "";
-        for (int index = 0; index < countUser; index++) {
+        for (int index = 0; index < userList.size(); index++) {
             currLine = userList.get(index) + ";" + passwordList.get(index) + ";" + userType.get(index);
-            outputFile.write(currLine + '\n');
+            if (index > 0) {
+                outputFile.append('\n');
+            }
+            outputFile.append(currLine);
         }
         outputFile.close();
         in.close();
-     
-        }
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -442,24 +477,25 @@ public class SearchStudent extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SearchStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SearchStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SearchStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SearchStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExistingStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SearchStudent().setVisible(true);
+                new ExistingStudent().setVisible(true);
             }
         });
     }
-    private List<Lecturer> lecturerList;
+    private List<Student> studentList;
     final JPanel panel = new JPanel();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DeleteButton;
@@ -474,10 +510,10 @@ public class SearchStudent extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField keyword;
     private javax.swing.JRadioButton lastButton;
     private javax.swing.JButton modifyLecturer;
+    private javax.swing.JTable resultTable;
     private javax.swing.JButton searchButton;
     private javax.swing.JRadioButton userButton;
     // End of variables declaration//GEN-END:variables

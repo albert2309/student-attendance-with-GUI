@@ -14,13 +14,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Albert
  */
-public class ViewIntakeStudents extends javax.swing.JFrame {
-
+public class IntakeStudents extends javax.swing.JFrame {
+    
     /**
      * Creates new form viewAll
      */
-    public ViewIntakeStudents(String intakeLecturer) {
+    public IntakeStudents(String intakeLecturer) {
         initComponents();
+        this.intakeLecturer = intakeLecturer;
         jLabel1.setText("List of students");
         String[] splittedIntake = intakeLecturer.split("/");
         for (int count = 0; count < splittedIntake.length; count++) {
@@ -37,15 +38,12 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         IntakeList = new javax.swing.JComboBox<>();
-
-        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,7 +76,7 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("List of lecturer");
+        jLabel1.setText("List of students in an intake");
 
         jButton2.setText("Exit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +146,7 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
 
     private void IntakeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IntakeListActionPerformed
         try {
-            FileReader inputFile = new FileReader("D:\\\\Albert\\\\Documents\\\\NetBeansProjects\\\\OODJ\\\\src\\\\tugasCok\\\\studentInfoList.txt");
+            FileReader inputFile = new FileReader(".\\src\\\\tugasCok\\\\studentInfoList.txt");
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
             String currLine, id, username, firstName, lastName, gender, dateOfBirth, intake;
@@ -178,6 +176,7 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
+        this.setVisible(true);
     }//GEN-LAST:event_IntakeListActionPerformed
 
     /**
@@ -197,14 +196,18 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewIntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewIntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewIntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewIntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IntakeStudents.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -213,12 +216,12 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewIntakeStudents("UC2F/UC1F").setVisible(true);
+                new IntakeStudents("UC2F/UC1F").setVisible(true);
             }
         });
     }
 
-    public void addRows(String directory) {
+    public void AddRows(String directory) {
         //file format:ID;username;first name;last name;gender;DOB
         /*object format: {id, firstname, lastname, gender, DOB} */
         //Might consider username to be added into the list in the future
@@ -250,10 +253,9 @@ public class ViewIntakeStudents extends javax.swing.JFrame {
         }
     }
 
-
+    private String intakeLecturer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> IntakeList;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

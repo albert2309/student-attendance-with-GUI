@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- 
 package tugasCok;
+
 import java.text.*;
 import javax.swing.*;
 
@@ -38,6 +38,7 @@ public class Admin extends JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +59,11 @@ public class Admin extends JFrame {
         });
 
         jButton3.setText("Search Student");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         registerLecturer.setText("Register Lecturer");
         registerLecturer.addActionListener(new java.awt.event.ActionListener() {
@@ -84,6 +90,13 @@ public class Admin extends JFrame {
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Modify Attendance");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -114,6 +127,10 @@ public class Admin extends JFrame {
                         .addGap(164, 164, 164)
                         .addComponent(jButton1)))
                 .addContainerGap(65, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(135, 135, 135))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +149,9 @@ public class Admin extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(35, 35, 35))
         );
@@ -142,43 +161,57 @@ public class Admin extends JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setVisible(false);
-        removeAll(); 
+        removeAll();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void registerStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStudentActionPerformed
-        Registration studentFrame = new Registration(true);
-        studentFrame.setVisible(true);
+        Register(true);
     }//GEN-LAST:event_registerStudentActionPerformed
-
+    public void Register(boolean isStudent) {
+        Registration newUser = new Registration(isStudent);
+        newUser.setVisible(true);
+    }
     private void registerLecturerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerLecturerActionPerformed
-        Registration lecturerFrame = new Registration(false);
-        lecturerFrame.setVisible(true);
+        Register(false);
     }//GEN-LAST:event_registerLecturerActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        ViewAll studentFrameList = new ViewAll(false);
-        studentFrameList.setVisible(true);
+        ShowListOfUser(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    public void ShowListOfUser(boolean isLecturer) {
+        ListOfUser frameList = new ListOfUser(isLecturer);
+    }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        ViewAll lecturerFrameList = new ViewAll(true);
-        lecturerFrameList.setVisible(true);
+        ShowListOfUser(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-   
-        SearchLecturer lecturerFrame;
-    lecturerFrame = new SearchLecturer();
-    lecturerFrame.setVisible(true);
+        SearchLecturer();
     }//GEN-LAST:event_jButton6ActionPerformed
-
+    public void SearchLecturer(){
+        ExistingLecturer lecturerFrame = new ExistingLecturer();
+    }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       manageAbsent();
+    }//GEN-LAST:event_jButton2ActionPerformed
+    public void manageAbsent(){
+         AbsentRequest x = new AbsentRequest();
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+      SearchStudent();
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public void SearchStudent(){
+         ExistingStudent x = new ExistingStudent();
+    }
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;

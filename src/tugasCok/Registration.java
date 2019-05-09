@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- package tugasCok;
+package tugasCok;
 
 import java.text.*;
 import java.util.Arrays;
@@ -21,8 +21,7 @@ import java.time.format.DateTimeFormatter;
 public class Registration extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewJFrame
-     * OPTIONAL: CHECK IF THE DATE IS VALID OR NOT
+     * Creates new form NewJFrame OPTIONAL: CHECK IF THE DATE IS VALID OR NOT
      */
     public Registration(boolean isStudent) {
         initComponents();
@@ -49,6 +48,9 @@ public class Registration extends javax.swing.JFrame {
         male = new javax.swing.JRadioButton();
         female = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
+        /**
+        * Following source code obtained from (Anto, 2015)
+        */
         SimpleDateFormat model = new SimpleDateFormat("dd.MMM.yy");
         DOBSpinner = new javax.swing.JSpinner(new SpinnerDateModel());
         jLabel5 = new javax.swing.JLabel();
@@ -111,7 +113,7 @@ public class Registration extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Intake");
 
-        jLabel9.setText("Use comma to seperate multiple intakes");
+        jLabel9.setText("Use (/) for multiple intake. Lecturer only");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -210,10 +212,12 @@ public class Registration extends javax.swing.JFrame {
     }//GEN-LAST:event_cancel
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-      
-        FileReader inputFile;
+        Register();
+    }//GEN-LAST:event_registerButtonActionPerformed
+    public void Register(){
+                FileReader inputFile;
         try {
-            inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
+            inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
             Scanner in = new Scanner(inputFile);
             Scanner lineTokenizer;
             String currLine;
@@ -240,33 +244,40 @@ public class Registration extends javax.swing.JFrame {
             LocalDate localDate = LocalDate.now();
             String currentDate = DateTimeFormatter.ofPattern("dd MMM yyyy").format(localDate);
             final JPanel panel = new JPanel();
+            boolean hasExist = false;
             if (userField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Missing user name!", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
             if (String.valueOf(filledPass).isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Missing password!", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
             if (firstNameField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Missing first name!", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
             if (lastNameField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Missing last name!", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
             if (filledGender.equals("Null")) {
                 JOptionPane.showMessageDialog(panel, "Pick gender!", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
             if (intakeField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Missing intake", "Error", JOptionPane.ERROR_MESSAGE);
+                hasExist = true;
             }
 
             if (filledDOB.compareTo(currentDate) == 0) {
                 JOptionPane.showMessageDialog(panel, "Date must not be today!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-                /* else if (filledDOB.compareTo(currentDate) > 0) {
+            /* else if (filledDOB.compareTo(currentDate) > 0) {
                 JOptionPane.showMessageDialog(panel, "Date must be in past not future!", "Error", JOptionPane.ERROR_MESSAGE);
             }*/
 
-            boolean hasExist = false;
+
             if (Arrays.equals(filledUser.toCharArray(), filledPass)) {
                 JOptionPane.showMessageDialog(panel, "Username must not same as password", "Error", JOptionPane.ERROR_MESSAGE);
                 hasExist = true;
@@ -285,9 +296,9 @@ public class Registration extends javax.swing.JFrame {
             if (!hasExist) {
                 try {
                     if (jLabel1.getText().toString().equals("Please fill in Lecturer's information") == true) {
-                        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\lecturerInfoList.txt");
+                        inputFile = new FileReader(".\\src\\tugasCok\\lecturerInfoList.txt");
                     } else {
-                        inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt");
+                        inputFile = new FileReader(".\\src\\tugasCok\\studentInfoList.txt");
                     }
                 } catch (IOException fileError) {
                     System.out.println("FILE NOT FOUND!!");
@@ -302,6 +313,7 @@ public class Registration extends javax.swing.JFrame {
                 //check take all available number and put the number into arrayList 
                 in = new Scanner(inputFile);
                 String idTag = "";
+                boolean isInfoEmpty = true;
                 while (in.hasNext()) {
                     currLine = in.nextLine();
                     lineTokenizer = new Scanner(currLine);
@@ -310,6 +322,7 @@ public class Registration extends javax.swing.JFrame {
                     idTag = lineTokenizer.next();
                     idNumber = idTag.replaceAll("\\D+", "");
                     existingId.add(Integer.parseInt(idNumber));
+                    isInfoEmpty = false;
                 }
                 Collections.sort(existingId);
                 //search a sorted number on which one is missing
@@ -317,45 +330,47 @@ public class Registration extends javax.swing.JFrame {
                 for (int x = 0; x < existingId.size(); x++) {
                     if (x == existingId.get(x)) {
                         smallestAvailableNumber = x;
-                        smallestAvailableNumber++;    
+                        smallestAvailableNumber++;
                     }
                 }
-                
+
                 //count how many line in the loginList.txt
-               int numberOfLine = 0;
-               inputFile = new FileReader("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt");
-               in = new Scanner(inputFile);
+                int numberOfLine = 0;
+                inputFile = new FileReader(".\\src\\tugasCok\\loginList.txt");
+                in = new Scanner(inputFile);
                 while (in.hasNext() && hasExist == false) {
-                currLine = in.nextLine();
-                lineTokenizer = new Scanner(currLine);
-                lineTokenizer.useDelimiter(";");
-                numberOfLine++;
+                    currLine = in.nextLine();
+                    lineTokenizer = new Scanner(currLine);
+                    lineTokenizer.useDelimiter(";");
+                    numberOfLine++;
                 }
                 String registeredUser;
                 PrintWriter output;
                 if (jLabel1.getText().equals("Please fill in Lecturer's information") == true) {
-                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\lecturerInfoList.txt", true));
+
+                    output = new PrintWriter(new FileWriter(".\\src\\tugasCok\\lecturerInfoList.txt", true));
                     registeredUser = "L-" + smallestAvailableNumber + ";" + filledUser + ";" + filledFirst + ";" + filledLastName + ";" + filledGender + ";" + filledDOB + ";" + filledIntake;
-                    if (smallestAvailableNumber > 0) {
+                    if (isInfoEmpty == false) {
                         output.append('\n');
                     }
                     output.append(registeredUser);
+
                     output.close();
-                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt", true));
+                    output = new PrintWriter(new FileWriter(".\\src\\tugasCok\\loginList.txt", true));
                     registeredUser = filledUser + ";" + String.valueOf(filledPass) + ";lecturer";
                     if (numberOfLine > 0) {
                         output.append('\n');
                     }
                     output.append(registeredUser);
                 } else {
-                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\studentInfoList.txt", true));
+                    output = new PrintWriter(new FileWriter(".\\src\\tugasCok\\studentInfoList.txt", true));
                     registeredUser = "S-" + smallestAvailableNumber + ";" + filledUser + ";" + filledFirst + ";" + filledLastName + ";" + filledGender + ";" + filledDOB + ";" + filledIntake;
-                    if (smallestAvailableNumber > 0) {
+                    if (isInfoEmpty == false) {
                         output.append('\n');
                     }
                     output.append(registeredUser);
                     output.close();
-                    output = new PrintWriter(new FileWriter("D:\\Albert\\Documents\\NetBeansProjects\\OODJ\\src\\tugasCok\\loginList.txt", true));
+                    output = new PrintWriter(new FileWriter(".\\src\\tugasCok\\loginList.txt", true));
                     registeredUser = filledUser + ";" + String.valueOf(filledPass) + ";student";
                     if (numberOfLine > 0) {
                         output.append('\n');
@@ -364,7 +379,7 @@ public class Registration extends javax.swing.JFrame {
                 }
                 output.close();
                 JOptionPane.showMessageDialog(panel, "Registration success");
-                 in.close();
+                in.close();
                 /*
             firstName = lineTokenizer.next();
             lastName = lineTokenizer.next();
@@ -376,8 +391,7 @@ public class Registration extends javax.swing.JFrame {
             System.out.println("FILE NOT FOUND!!");
             System.exit(0);
         }
-    }//GEN-LAST:event_registerButtonActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */

@@ -1,5 +1,5 @@
- 
 package tugasCok;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,17 +11,19 @@ package tugasCok;
  * @author Albert
  */
 public class Lecturer extends PersonInfo {
+
     /**
      * Creates new form Lecturer
      */
-    public Lecturer(){
+    public Lecturer() {
         super();
         initComponents();
     }
-    public Lecturer(String id, String username, String firstName, String lastName, String gender, String dateOfBirth,String intake) {
+
+    public Lecturer(String id, String username, String firstName, String lastName, String gender, String dateOfBirth, String intake) {
         super(id, username, firstName, lastName, gender, dateOfBirth, intake);
         initComponents();
-        
+
     }
 
     /**
@@ -44,6 +46,11 @@ public class Lecturer extends PersonInfo {
         jLabel1.setText("Welcome to Lecturer system!");
 
         jToggleButton1.setText("View intakewise list of students");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Mark the attendance of students");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -116,14 +123,23 @@ public class Lecturer extends PersonInfo {
     }//GEN-LAST:event_CancelButtoncancel
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     Session x = new Session(this.getIntake(),this.getIdNumber());
-     x.setVisible(true);
+        CallMarkForAttendance();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    public void CallMarkForAttendance() {
+        NewAttendance x = new NewAttendance(this.getIntake(), this.getIdNumber());
+        x.setVisible(true);
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    PickSession x = new PickSession(this.getIdNumber()); 
-    x.setVisible(true);
+        CallModifyAttendance();
     }//GEN-LAST:event_jButton2ActionPerformed
+    
+    public void CallModifyAttendance() {
+        Session x = new Session(this.getIdNumber());
+        x.setVisible(true);
+    }
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        IntakeStudents x = new IntakeStudents(this.getIntake());
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,7 +176,7 @@ public class Lecturer extends PersonInfo {
         });
 
     }
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JToggleButton CancelButton;
     private javax.swing.JButton jButton1;

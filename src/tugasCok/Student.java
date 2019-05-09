@@ -1,24 +1,25 @@
- 
 package tugasCok;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Albert
  */
 public class Student extends PersonInfo {
+
     /**
      * Creates new form Lecturer
      */
-    public Student(){
+    public Student() {
         super();
         initComponents();
     }
-    public Student(String id, String username, String firstName, String lastName, String gender, String dateOfBirth,String intake) {
+
+    public Student(String id, String username, String firstName, String lastName, String gender, String dateOfBirth, String intake) {
         super(id, username, firstName, lastName, gender, dateOfBirth, intake);
         initComponents();
     }
@@ -42,10 +43,20 @@ public class Student extends PersonInfo {
         jLabel1.setText("Welcome Student!");
 
         jButton1.setText("View Attendance");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Send document for absent");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        CancelButton.setText("Cancel");
+        CancelButton.setText("Exit");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);
@@ -96,6 +107,22 @@ public class Student extends PersonInfo {
         this.dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CallAbsentWithReason();
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
+    public void CallAbsentWithReason() {
+        AbsentWithReason x = new AbsentWithReason(this.getIdNumber(), this.getFirstName(), this.getLastName());
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CallAttendance();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void CallAttendance() {
+        Attendance x = new Attendance(this.getIdNumber(), this.getIntake());
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -132,7 +159,7 @@ public class Student extends PersonInfo {
         });
 
     }
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JToggleButton CancelButton;
     private javax.swing.JButton jButton1;

@@ -1,0 +1,4 @@
+SES-0;L-0;tiko;ANJING;UC2F;12:55:00;15:55:00;26 Jul 2017;S-0,devira,putri,PRESENT,S-3,tanveer,sikh,ABSENT
+SES-1;L-0;wwww;babi;UC2F;08:57;11:57;29 Jul 2017;S-0,devira,putri,ABSENT,S-3,tanveer,sikh,ABSENT
+SES-2;L-0;wkwk;babi;UC2F;06:08;14:08;26 Jul 2017;S-0,devira,putri,ABSENT,S-3,tanveer,sikh,ABSENT
+SES-3;L-0;wkwk;babi;UC2F;06:08;14:08;20 Jul 2017;S-0,devira,putri,LATE,S-3,tanveer,sikh,ABSENT
